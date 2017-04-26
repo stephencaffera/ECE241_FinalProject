@@ -29,7 +29,7 @@ void UpdateClockTimer()
 	clockTimer += (CLOCK_INTERVAL - timerError);
 }
 
-void UpdateTime()
+void UpdateClock()
 {
 	if (seconds < 59) seconds++;
 	else

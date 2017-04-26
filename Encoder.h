@@ -1,16 +1,12 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-#include <LiquidCrystal.h>
-
-LiquidCrystal LcdDriver(11, 9, 5, 6, 7, 8);
-
 enum ButtonState {Idle, Wait, Low};
 ButtonState State = Idle;
 
 int encoderPosition = 0;
 unsigned long timer;
-unsigned long ButtonTime;
+unsigned long buttonTime;
 int PressCount = 0;
 
 boolean ButtonNextState(int Input)
@@ -20,7 +16,7 @@ boolean ButtonNextState(int Input)
     case Idle:
       if(Input == LOW)
       {
-        ButtonTime = millis();
+        buttonTime = millis();
         State = Wait;
       }
       break;
@@ -29,7 +25,7 @@ boolean ButtonNextState(int Input)
       {
         State = Idle;
       }
-      else if(millis() - ButtonTime >= 5)
+      else if(millis() - buttonTime >= 5)
       {
         State = Low;
         return true;

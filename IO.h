@@ -5,6 +5,7 @@
 
 #define BAUD_RATE 9600
 
+
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
 void Console_PrintTime(int hours, int minutes, int seconds)
@@ -29,7 +30,7 @@ void IO_Setup()
   Serial.begin(BAUD_RATE);
 }
 
-void LCD_PrintTime()
+void LCD_PrintTime(int hours, int minutes, int seconds)
 {
   LCD.print("                ");
   
@@ -48,16 +49,9 @@ void LCD_PrintTime()
   LCD.print(seconds);
 }
 
-void LCD_DisplayPressCount(int pressCount) 
-{
-    LCD.clear();
-    LCD.setCursor(0,0);
-    LCD.print(PressCount);
-}
-
 void LCD_DisplayEncoderPosition(int col, int row, int encoderPosition)
 {
-    int encoderCount = encoderPosition / 4;
+    static int encoderCount = encoderPosition / 4;
     LCD.setCursor(col, row);
     LCD.print(encoderCount);
 }
@@ -73,6 +67,18 @@ void LCD_DisplayAngle(int row, int angle)
   LCD_ClearRow(row);
   LCD.setCursor(0, row);
   LCD.print(angle);
+}
+
+void Universal_PrintTime()
+{
+  Console_PrintTime();
+  LCD_PrintTime();
+}
+
+void Universal_PrintAngle(int angle)
+{
+  Console_PrintAngle();
+  LCD_PrintTime();
 }
 
 #endif

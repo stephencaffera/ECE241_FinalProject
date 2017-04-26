@@ -2,28 +2,33 @@
 #define SOLAR_H
 
 #include <Servo.h>
+#include <float.h>
+#include "IO.h"
 
+#define FLT_DIG 1
+#define SOLAR_PIN 3
 #define PIN_TOTAL 0
 #define PIN_PART 1
-#define RATIO (5.5 / 1024.0)
+#define RATIO (5.0 / 1024.0)
+
+extern void UniversalPrintAngle(int angle);
 
 Servo Solar;
-unsigned int solarTimer;
-int solarAngle;
+int solarTimer, solarAngle;
 
 void AdjustSolar(float diff)
 {
+  solarAngle = Solar.read();
+  UniversalPrintAngle(solarAngle);
+  
   if (diff > 0.5)
   {
-    solarAngle = --Solar.read();
-    Solar.write(solarAngle);
+    Solar.write(--solarAngle);
   }
   else if (diff < 0.5)
   {
-    solarAngle = ++Solar.read();
-    Solar.write(solarAngle);
+    Solar.write(++solarAngle);
   }
-  else break;
 }
 
 float ReadSolar()
@@ -41,8 +46,9 @@ float ReadSolar()
 
 void SolarSetup()
 {
+  Solar.attach(SOLAR_PIN);
   pinMode(PIN_TOTAL, INPUT);
-  pinMode(PIN_PART, INPUT};
+  pinMode(PIN_PART, INPUT);
   solarTimer = millis();
 }
 
