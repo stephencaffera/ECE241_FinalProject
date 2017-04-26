@@ -2,12 +2,10 @@
 #define ENCODER_H
 
 enum ButtonState {Idle, Wait, Low};
-ButtonState State = Idle;
 
+ButtonState State = Idle;
 int encoderPosition = 0;
-unsigned long timer;
-unsigned long buttonTime;
-int PressCount = 0;
+unsigned long timer, buttonTime;
 
 boolean ButtonNextState(int Input)
 {
@@ -62,14 +60,6 @@ void MonitorB()
   else
   {
     encoderPosition++;
-  }
-}
-
-void UpdatePressCount()
-{
-  if(ButtonNextState(digitalRead(4)))
-  {
-    PressCount++;
   }
 }
 

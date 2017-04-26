@@ -11,7 +11,7 @@
 #define PIN_PART 1
 #define RATIO (5.0 / 1024.0)
 
-extern void UniversalPrintAngle(int angle);
+extern void Universal_PrintAngle(int angle);
 
 Servo Solar;
 int solarTimer, solarAngle;
@@ -19,7 +19,7 @@ int solarTimer, solarAngle;
 void AdjustSolar(float diff)
 {
   solarAngle = Solar.read();
-  UniversalPrintAngle(solarAngle);
+  Universal_PrintAngle(solarAngle);
   
   if (diff > 0.5)
   {

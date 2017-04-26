@@ -4,12 +4,24 @@
 #include <LiquidCrystal.h>
 
 #define BAUD_RATE 9600
+#define TOP_ROW 0
+#define BOTTOM_ROW 1
+#define FIRST_COL 0
+#define SPACES "                "
 
+extern int hours, minutes, seconds;
 
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
-void Console_PrintTime(int hours, int minutes, int seconds)
+void LCD_ClearTopRow()
 {
+  LCD.setCursor(FIRST_COL, TOP_ROW);
+  LCD.print(SPACES);
+}
+
+void Console_PrintTime()
+{
+  Serial.print("Time: ");
   if (hours < 10) Serial.print("0"); 
   
   Serial.print(hours); 
@@ -25,13 +37,21 @@ void Console_PrintTime(int hours, int minutes, int seconds)
   Serial.println(seconds);
 } 
 
+void Console_PrintAngle(int angle)
+{
+  Serial.print("Angle: ");
+  Serial.print(angle);
+}
+
 void IO_Setup()
 {
   Serial.begin(BAUD_RATE);
 }
 
-void LCD_PrintTime(int hours, int minutes, int seconds)
+void LCD_PrintTime()
 {
+  LCD_ClearTopRow();
+  LCD.setCursor(FIRST_COL, TOP_ROW);
   LCD.print("                ");
   
   if (hours < 10) LCD.print("0");
@@ -56,17 +76,19 @@ void LCD_DisplayEncoderPosition(int col, int row, int encoderPosition)
     LCD.print(encoderCount);
 }
 
-void LCD_ClearRow(int row)
+void LCD_ClearBottomRow()
 {
-  LCD.setCursor(0, row);
-  LCD.print("                ");
+  LCD.setCursor(FIRST_COL, BOTTOM_ROW);
+  LCD.print(SPACES);
 }
 
-void LCD_DisplayAngle(int row, int angle)
+void LCD_PrintAngle(int angle)
 {
-  LCD_ClearRow(row);
-  LCD.setCursor(0, row);
+  LCD_ClearBottomRow();
+  LCD.setCursor(FIRST_COL, BOTTOM_ROW);
+  LCD.print("Angle: ");
   LCD.print(angle);
+  LCD.print(" deg.");
 }
 
 void Universal_PrintTime()
@@ -77,8 +99,8 @@ void Universal_PrintTime()
 
 void Universal_PrintAngle(int angle)
 {
-  Console_PrintAngle();
-  LCD_PrintTime();
+  Console_PrintAngle(angle);
+  LCD_PrintAngle(angle);
 }
 
 #endif
