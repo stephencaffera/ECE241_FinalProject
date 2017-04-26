@@ -1,90 +1,32 @@
-#ifndef Clock_H
-#define Clock_H
+#ifndef CLOCK_H
+#define CLOCK_H
 
 #define CLOCK_INTERVAL 1000
 
-#define CONCAT(A, B) A ## B
+enum ClockStates {Running, SetHours, SetMinutes, SetSeconds};
 
-unsigned int hours, minutes, seconds, clockTimer = 0;
+ClockStates clockState;
+int hours, minutes, seconds, timerError, newTime[3];
+unsigned int clockTimer;
 
 void ClockSetup()
 {
-	SetTime();
 	clockTimer = millis();
-}
-
-void Console_PrintTime()
-{
-	if (hours < 10) 
-	{
-		Serial.print("0");
-	} 
-	
-	Serial.print(hours); 
-	Serial.print(":");
-
-	
-	if (minutes < 10) 
-	{
-		Serial.print("0");
-	} 
-	
-	Serial.print(minutes);
-	Serial.print(":");
-
-	if (seconds < 10) 
-	{
-		Serial.print("0");
-	} 
-	
-	Serial.println(seconds);
-} 
-
-void LCD_PrintTime()
-{
-	LcdDriver.print("                ");
-	if (hours < 10) {
-		LcdDriver.print("0");
-	}
-	LcdDriver.print(hours);
-	LcdDriver.print(":");
-
-	if (minutes < 10) {
-		LcdDriver.print("0");
-	}
-	LcdDriver.print(minutes);
-	LcdDriver.print(":");
-
-	if (seconds < 10) {
-		LcdDriver.print("0");
-	}
-	LcdDriver.print(seconds);
 }
 
 boolean OneSecondPassed()
 {
-	if (millis() - clockTimer >= CLOCK_INTERVAL) return true;
-	else return false;
-}
-
-void Console_SetTime()
-{
-	do
+	if (millis() - clockTimer >= CLOCK_INTERVAL)
 	{
-		Serial.write("Enter the current time (hh:mm:ss): ")
-			string userTime = Serial.read();
-
-		if (userTime == 'Q' || userTime == 'q') break;
-	} while (strlen(userTime) == 8);
-
-	hours = CONCAT(userTime[0], userTime[1]);
-	minutes = CONCAT(userTime[3], userTime[4]);
-	seconds = CONCAT(userTime[6], userTime[7]);
+	  timerError = (millis() - clockTimer - CLOCK_INTERVAL);
+	  return true;
+	}
+	else return false;
 }
 
 void UpdateClockTimer()
 {
-	clockTimer += CLOCK_INTERVAL;
+	clockTimer += (CLOCK_INTERVAL - timerError);
 }
 
 void UpdateTime()
@@ -108,61 +50,58 @@ void UpdateTime()
 	}
 }
 
-enum ClockStates {CLOCK_RUNNING, SET_HOURS, SET_MINUTES, SET_SECONDS};
-
-ClockStates clockState = CLOCK_RUNNING;
-
-void LCD_SetTime(char input)
+void SetTime(char input)
 {
 	switch (clockState)
 	{ 
-		case CLOCK_RUNNING:
-			if (input == 'S')
+		case Running:
+			if (input == 'S' || input == 's')
 			{
-				
-				Hours = 0; 
-				Minutes = 0;
-				Seconds = 0;
-				clockState = SET_HOURS;
+				hours = 0; 
+				minutes = 0;
+				seconds = 0;
+				clockState = SetHours;
 			} 
 			break;
-		case SET_HOURS: 
+		case SetHours: 
 			if (input >= '0' && input <= '9')
 			{
-				Hours = 10 * (Hours % 10) + input - '0';
+				hours = 10 * (hours % 10) + input - '0';
 			}
 			else if (input == ':')
 			{
-				clockState = SET_MINUTES;
+				clockState = SetMinutes;
 			}
 			else if (input == 'R')
 			{
-				clockState = CLOCK_RUNNING;
+				clockState = Running;
 			}
 			break;
-		case SET_MINUTES: 
+		case SetMinutes: 
 			if (input >= '0' && input <= '9')
 			{
-				Minutes = 10 * (Minutes % 10) + input - '0';
+				minutes = 10 * (minutes % 10) + input - '0';
 			}
 			else if (input == ':')
 			{
-				clockState = SET_SECONDS;
+				clockState = SetSeconds;
 			}
 			else if (input == 'R')
 			{
-				clockState = CLOCK_RUNNING;
+				clockState = Running;
 			}
 			break;
-		case SET_SECONDS: 
+		case SetSeconds: 
 			if (input >= '0' && input <= '9')
 			{
-				Seconds = 10 * (Seconds % 10) + input - '0';
+				seconds = 10 * (seconds % 10) + input - '0';
 			}
 			else if (input == 'R')
 			{
-				clockState = CLOCK_RUNNING;
+				clockState = Running;
 			}
 			break;
 	}
-} #endif
+} 
+
+#endif

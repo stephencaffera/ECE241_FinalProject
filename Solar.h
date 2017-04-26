@@ -1,34 +1,42 @@
+#ifndef SOLAR_H
+#define SOLAR_H
+
 #include <Servo.h>
 
 #define PIN_TOTAL 0
 #define PIN_PART 1
 #define RATIO (5.5 / 1024.0)
 
+Servo Solar;
 unsigned int solarTimer;
-float lightTotal, lightPart, voltsTotal, voltsPart, voltsDiff;
+int solarAngle;
 
-void AdjustSolar()
+void AdjustSolar(float diff)
 {
-  if (voltsDiff > 0.5)
+  if (diff > 0.5)
   {
-    /*Move Servo CCW*/
+    solarAngle = --Solar.read();
+    Solar.write(solarAngle);
   }
-  else if (voltsDiff < 0.5)
+  else if (diff < 0.5)
   {
-    /*Move Servo CW*/
+    solarAngle = ++Solar.read();
+    Solar.write(solarAngle);
   }
   else break;
 }
 
-void ReadSolar()
+float ReadSolar()
 {
-  lightTotal = digitalRead(PIN_TOTAL);
-  lightPart = digitalRead(PIN_PART);
+  float lightTotal = digitalRead(PIN_TOTAL);
+  float lightPart = digitalRead(PIN_PART);
 
-  voltsTotal = lightTotal * RATIO;
-  voltsPart = lightPart * RATIO;
+  float voltsTotal = lightTotal * RATIO;
+  float voltsPart = lightPart * RATIO;
 
-  voltsDiff = (voltsTotal - voltsPart);
+  float voltsDiff = (voltsTotal - voltsPart);
+
+  return voltsDiff;
 }
 
 void SolarSetup()
@@ -37,3 +45,5 @@ void SolarSetup()
   pinMode(PIN_PART, INPUT};
   solarTimer = millis();
 }
+
+#endif

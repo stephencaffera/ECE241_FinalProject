@@ -1,21 +1,19 @@
 /*
-* Project by Stephen Caffera and Iris LoCoco
+* Written by Stephen Caffera and Iris LoCoco
+* Solar Tracker Final Project
 * ECE 241, Spring 2017
 */
 
-#include <LiquidCrystal.h>
-#include <Servo.h>
 #include "Clock.h"
 #include "Encoder.h"
+#include "IO.h"
 #include "Solar.h"
-
-#define BAUD 9600
 
 extern unsigned int solarTimer;
 
 void setup()
 {
-	Serial.begin(BAUD);
+  IO_Setup();
 	EncoderSetup();
   SolarSetup();
 	ClockSetup();
@@ -23,22 +21,17 @@ void setup()
 
 void loop()
 {
-  if (millis() - solarTimer > 0)
+  if (millis() > solarTimer)
   {
-    ReadSolar();
-    AdjustSolar();
+    AdjustSolar(ReadSolar());
   }
   
 	if (OneSecondPassed())
 	{
+    UpdateClockTimer();
 		UpdateClock();
 		Console_PrintTime();
-		UpdateClockTimer();
 	}
 
-	if (Serial.available())
-	{
-		Console_SetTime(Serial.read());
-	}
-
+	if (Serial.available()) SetTime(Serial.read());
 }

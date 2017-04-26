@@ -1,5 +1,5 @@
-#ifndef ARDUINO_ENCODER_H
-#define ARDUINO_ENCODER_H
+#ifndef ENCODER_H
+#define ENCODER_H
 
 #include <LiquidCrystal.h>
 
@@ -9,7 +9,6 @@ enum ButtonState {Idle, Wait, Low};
 ButtonState State = Idle;
 
 int encoderPosition = 0;
-int encoderCount = 0;
 unsigned long timer;
 unsigned long ButtonTime;
 int PressCount = 0;
@@ -70,35 +69,11 @@ void MonitorB()
   }
 }
 
-void LCD_DisplayPressCount() 
+void UpdatePressCount()
 {
   if(ButtonNextState(digitalRead(4)))
   {
     PressCount++;
-    LcdDriver.clear();
-    LcdDriver.setCursor(0,0);
-    LcdDriver.print(PressCount);
-  }
-}
-
-void LCD_DisplayEncoderPosition()
-{
-  if(millis() - timer >= 100)
-  {
-    encoderCount = encoderPosition / 4;
-    LcdDriver.setCursor(0, 0);
-    LcdDriver.print(encoderCount);
-    timer += 100;
-  }
-}
-
-void LCD_DisplayEncoderPosition(int col)
-{
-  if(millis() - timer >= 100)
-  {
-    LcdDriver.setCursor(col, 0);
-    LcdDriver.print(encoderPosition);
-    timer += 100;
   }
 }
 
