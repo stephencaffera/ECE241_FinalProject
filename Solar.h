@@ -14,7 +14,8 @@
 extern void Universal_PrintAngle(int angle);
 
 Servo Solar;
-int solarTimer, solarAngle;
+unsigned long solarTimer;
+int solarAngle;
 
 void AdjustSolar(float diff)
 {

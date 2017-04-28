@@ -9,7 +9,8 @@
 #include "IO.h"
 #include "Solar.h"
 
-extern int solarTimer;
+extern unsigned long solarTimer;
+extern int solarAngle;
 
 void setup()
 {
@@ -31,6 +32,7 @@ void loop()
     UpdateClockTimer();
 		UpdateClock();
 		Universal_PrintTime();
+    Universal_PrintAngle(solarAngle);
 	}
 
 	if (Serial.available()) SetTime(Serial.read());

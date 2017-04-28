@@ -6,8 +6,8 @@
 enum ClockStates {Running, SetHours, SetMinutes, SetSeconds};
 
 ClockStates clockState;
-int hours, minutes, seconds, timerError, newTime[3];
-unsigned int clockTimer;
+int hours, minutes, seconds, timerError;
+unsigned long clockTimer;
 
 void ClockSetup()
 {
@@ -64,43 +64,19 @@ void SetTime(char input)
 			} 
 			break;
 		case SetHours: 
-			if (input >= '0' && input <= '9')
-			{
-				hours = 10 * (hours % 10) + input - '0';
-			}
-			else if (input == ':')
-			{
-				clockState = SetMinutes;
-			}
-			else if (input == 'R')
-			{
-				clockState = Running;
-			}
+			if (input >= 0 && <= 24) hours = input;
+			else if (input == ':') clockState = SetMinutes;
+			else if (input == 'R') clockState = Running;
 			break;
 		case SetMinutes: 
-			if (input >= '0' && input <= '9')
-			{
-				minutes = 10 * (minutes % 10) + input - '0';
-			}
-			else if (input == ':')
-			{
-				clockState = SetSeconds;
-			}
-			else if (input == 'R')
-			{
-				clockState = Running;
-			}
-			break;
+			if (input >= 0 && <= 59) minutes = input;
+      else if (input == ':') clockState = SetSeconds;
+      else if (input == 'R') clockState = Running;
+      break;
 		case SetSeconds: 
-			if (input >= '0' && input <= '9')
-			{
-				seconds = 10 * (seconds % 10) + input - '0';
-			}
-			else if (input == 'R')
-			{
-				clockState = Running;
-			}
-			break;
+			if (input >= 0 && <= 59) hours = input;
+      else if (input == 'R') clockState = Running;
+      break;
 	}
 } 
 
