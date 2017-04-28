@@ -7,17 +7,11 @@
 #define TOP_ROW 0
 #define BOTTOM_ROW 1
 #define FIRST_COL 0
-#define SPACES "                "
+#define CLEAR "                "
 
 extern int hours, minutes, seconds;
 
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
-
-void LCD_ClearTopRow()
-{
-  LCD.setCursor(FIRST_COL, TOP_ROW);
-  LCD.print(SPACES);
-}
 
 void Console_PrintTime()
 {
@@ -46,13 +40,12 @@ void Console_PrintAngle(int angle)
 void IO_Setup()
 {
   Serial.begin(BAUD_RATE);
+  LCD.clear();
 }
 
 void LCD_PrintTime()
 {
   LCD_ClearTopRow();
-  LCD.setCursor(FIRST_COL, TOP_ROW);
-  LCD.print("                ");
   
   if (hours < 10) LCD.print("0");
     
@@ -79,7 +72,13 @@ void LCD_DisplayEncoderPosition(int col, int row, int encoderPosition)
 void LCD_ClearBottomRow()
 {
   LCD.setCursor(FIRST_COL, BOTTOM_ROW);
-  LCD.print(SPACES);
+  LCD.print(CLEAR);
+}
+
+void LCD_ClearTopRow()
+{
+  LCD.setCursor(FIRST_COL, TOP_ROW);
+  LCD.print(CLEAR);
 }
 
 void LCD_PrintAngle(int angle)

@@ -1,47 +1,67 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
+#define INTERRUPT_A 2
+#define INTERRUPT_B 3
+#define PRESS_READ 4
+#define PRESS_ERROR_INTERVAL 5
+
 enum ButtonState {Idle, Wait, Low};
 
-ButtonState State = Idle;
+ButtonState state = Idle;
 int encoderPosition = 0;
 unsigned long timer, buttonTime;
 
-boolean ButtonNextState(int Input)
+boolean ButtonNextState(int input)
 {
-  switch(State)
+  switch(state)
   {
     case Idle:
-      if(Input == LOW)
+      if(input == LOW)
       {
         buttonTime = millis();
-        State = Wait;
+        state = Wait;
       }
       break;
     case Wait:
-      if(Input == HIGH)
+      if(input == HIGH)
       {
-        State = Idle;
+        state = Idle;
       }
-      else if(millis() - buttonTime >= 5)
+      else if(millis() - buttonTime >= PRESS_ERROR_INTERVAL)
       {
-        State = Low;
+        state = Low;
         return true;
       }
       break;
     case Low:
-      if(Input == HIGH)
+      if(input == HIGH)
       {
-        State = Idle;
+        state = Idle;
       }
       break;
   }
   return false;
 }
 
+void EncoderSetup()
+{
+  pinMode(INTERRUPT_A, INPUT);
+  pinMode(INTERRUPT_B, INPUT);
+  pinMode(PRESS_READ, INPUT);
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
+  timer = millis();
+}
+
+int GetPress()
+{
+  return digitalRead(PRESS_READ);
+}
+
 void MonitorA()
 {
-  if(digitalRead(2) == digitalRead(3))
+  if(digitalRead(INTERRUPT_A) == digitalRead(INTERRUPT_B))
   {
     encoderPosition++;
   }
@@ -53,7 +73,7 @@ void MonitorA()
 
 void MonitorB()
 {
-  if(digitalRead(2) == digitalRead(3))
+  if(digitalRead(INTERRUPT_A) == digitalRead(INTERRUPT_B))
   {
     encoderPosition--;
   }
@@ -61,16 +81,6 @@ void MonitorB()
   {
     encoderPosition++;
   }
-}
-
-void EncoderSetup()
-{
-  pinMode(2, INPUT);
-  pinMode(3, INPUT);
-  pinMode(4, INPUT);
-  attachInterrupt(digitalPinToInterrupt(2), MonitorA, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(3), MonitorB, CHANGE);
-  timer = millis();
 }
 
 #endif

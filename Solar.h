@@ -3,7 +3,6 @@
 
 #include <Servo.h>
 #include <float.h>
-#include "IO.h"
 
 #define FLT_DIG 1
 #define SOLAR_PIN 3
