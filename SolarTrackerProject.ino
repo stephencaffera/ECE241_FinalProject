@@ -21,7 +21,7 @@ void setup()
 }
 
 void loop()
-{
+{ 
   if (millis() > solarTimer)
   {
     AdjustSolar(ReadSolar());

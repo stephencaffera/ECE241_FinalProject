@@ -6,12 +6,14 @@
 enum ClockStates {Running, SetHours, SetMinutes, SetSeconds};
 
 ClockStates clockState;
+boolean clockSet;
 int hours, minutes, seconds, timerError;
 unsigned long clockTimer;
 
 void ClockSetup()
 {
 	clockTimer = millis();
+  clockSet = false;
 }
 
 boolean OneSecondPassed()
@@ -61,20 +63,33 @@ void SetTime(char input)
 				minutes = 0;
 				seconds = 0;
 				clockState = SetHours;
+        clockSet = false;
 			} 
 			break;
 		case SetHours: 
 			if (input >= 0 && <= 24) hours = input;
 			else if (input == ':') clockState = SetMinutes;
-			else if (input == 'R') clockState = Running;
+			else if (input == 'R')
+			{
+			  clockState = Running;
+        clockSet = true;
+			}
 			break;
 		case SetMinutes: 
 			if (input >= 0 && <= 59) minutes = input;
       else if (input == ':') clockState = SetSeconds;
-      else if (input == 'R') clockState = Running;
+      else if (input == 'R')
+      {
+        clockState = Running;
+        clockSet = true;
+      }
       break;
 		case SetSeconds: 
-			if (input >= 0 && <= 59) hours = input;
+			if (input >= 0 && <= 59)
+			{
+			  seconds = input;
+        clockSet = true;
+			}
       else if (input == 'R') clockState = Running;
       break;
 	}

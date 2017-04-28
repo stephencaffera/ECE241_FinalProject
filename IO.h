@@ -2,6 +2,7 @@
 #define IO_H
 
 #include <LiquidCrystal.h>
+#include <stdio.h> //Add formatted printing using sprintf()
 
 #define BAUD_RATE 9600
 #define TOP_ROW 0
@@ -34,7 +35,8 @@ void Console_PrintTime()
 void Console_PrintAngle(int angle)
 {
   Serial.print("Angle: ");
-  Serial.print(angle);
+  Serial.println(angle);
+  Serial.println(" deg.\n");
 }
 
 void IO_Setup()
