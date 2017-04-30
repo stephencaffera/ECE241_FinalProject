@@ -2,7 +2,9 @@
 #define IO_H
 
 #include <LiquidCrystal.h>
+/*
 #include <stdio.h> //Add formatted printing using sprintf()
+*/
 
 #define BAUD_RATE 9600
 #define TOP_ROW 0
@@ -13,6 +15,8 @@
 extern int hours, minutes, seconds;
 
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
+
+int[3] newTime;
 
 void Console_PrintTime()
 {
@@ -37,6 +41,42 @@ void Console_PrintAngle(int angle)
   Serial.print("Angle: ");
   Serial.println(angle);
   Serial.println(" deg.\n");
+}
+
+void Console_SetTime(char input)
+{
+  if (input == 'S' || input == 's')
+  {
+    do
+    {
+      Serial.print("Enter new hours: ");
+        newTime[0] = Serial.read();
+    } while (newTime[0] < 0 && newTime[0] > 23);
+
+    do
+    {
+      Serial.print("Enter new minutes: ");      
+        newTime[1] = Serial.read();
+    } while (newTime[1] < 0 && newTime[1] > 59);
+
+    do
+    {
+      Serial.print("Enter new seconds: ");
+        newTime[2] = Serial.read();
+    } while (newTime[2] < 0 && newTime[2] > 59);
+
+    Serial.print("Changing time to ");
+    Console_PrintTime();
+    Serial.print("Confirm (Y/N): ");
+      char confirm = Serial.read();
+
+    if (confirm == 'Y' || confirm == 'y')
+    {
+      hours = newTime[0];
+      minutes = newTime[1];
+      seconds = newTime[2];
+    }
+  }
 }
 
 void IO_Setup()

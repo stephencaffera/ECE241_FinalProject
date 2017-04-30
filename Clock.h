@@ -3,7 +3,7 @@
 
 #define CLOCK_INTERVAL 1000
 
-enum ClockStates {Running, SetHours, SetMinutes, SetSeconds};
+extern boolean ButtonNextState(int input);
 
 ClockStates clockState;
 boolean clockSet;
@@ -51,48 +51,5 @@ void UpdateClock()
 		}
 	}
 }
-
-void SetTime(char input)
-{
-	switch (clockState)
-	{ 
-		case Running:
-			if (input == 'S' || input == 's')
-			{
-				hours = 0; 
-				minutes = 0;
-				seconds = 0;
-				clockState = SetHours;
-        clockSet = false;
-			} 
-			break;
-		case SetHours: 
-			if (input >= 0 && <= 24) hours = input;
-			else if (input == ':') clockState = SetMinutes;
-			else if (input == 'R')
-			{
-			  clockState = Running;
-        clockSet = true;
-			}
-			break;
-		case SetMinutes: 
-			if (input >= 0 && <= 59) minutes = input;
-      else if (input == ':') clockState = SetSeconds;
-      else if (input == 'R')
-      {
-        clockState = Running;
-        clockSet = true;
-      }
-      break;
-		case SetSeconds: 
-			if (input >= 0 && <= 59)
-			{
-			  seconds = input;
-        clockSet = true;
-			}
-      else if (input == 'R') clockState = Running;
-      break;
-	}
-} 
 
 #endif
