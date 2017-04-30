@@ -21,20 +21,20 @@ int[3] newTime;
 void Console_PrintTime()
 {
   Serial.print("Time: ");
-  if (hours < 10) Serial.print("0"); 
-  
-  Serial.print(hours); 
+  if (hours < 10) Serial.print("0");
+
+  Serial.print(hours);
   Serial.print(":");
 
-  if (minutes < 10) Serial.print("0"); 
-  
+  if (minutes < 10) Serial.print("0");
+
   Serial.print(minutes);
   Serial.print(":");
 
   if (seconds < 10) Serial.print("0");
-  
+
   Serial.println(seconds);
-} 
+}
 
 void Console_PrintAngle(int angle)
 {
@@ -88,21 +88,70 @@ void IO_Setup()
 void LCD_PrintTime()
 {
   LCD_ClearTopRow();
-  
+
   if (hours < 10) LCD.print("0");
-    
+
   LCD.print(hours);
   LCD.print(":");
 
   if (minutes < 10) LCD.print("0");
- 
+
   LCD.print(minutes);
   LCD.print(":");
 
   if (seconds < 10) LCD.print("0");
- 
+
   LCD.print(seconds);
 }
+
+/**
+* SettingClock is a function that processes incoming
+* characters from serial input to set the clock. If the user enters
+* the letter "S" or "s", clock-setting mode will execute.
+* @params: char Input.
+*/
+void SettingClock(char Input)
+{
+	// interpret input based on state
+	switch (clockState)
+	{
+	case CLOCK_RUNNING:
+		if (Input == 'S' || Input == 's') // If user inputs 'S' or 's'
+		{
+			clockState = CLOCK_SET_HOURS;
+			hours = 0;   // Resets clock variables to 0 before setting
+			minutes = 0;
+			seconds = 0;
+		}
+		break;
+
+	case CLOCK_SET_HOURS: //
+		if (Input >= '0' && Input <= '9')
+			hours = 10 * (hours % 10) + Input - '0';
+		else if (Input == ':')
+			clockState = CLOCK_SET_MINUTES;
+		else if (Input == 'R')
+			clockState = CLOCK_RUNNING;
+		break;
+
+	case CLOCK_SET_MINUTES: //
+		if (Input >= '0' && Input <= '9')
+			minutes = 10 * (minutes % 10) + Input - '0';
+		else if (Input == ':')
+			clockState = CLOCK_SET_SECONDS;
+		else if (Input == 'R')
+			clockState = CLOCK_RUNNING;
+		break;
+
+	case CLOCK_SET_SECONDS: //
+		if (Input >= '0' && Input <= '9')
+			seconds = 10 * (seconds % 10) + Input - '0';
+      clockSet = true;
+		else if (Input == 'R')
+			clockState = CLOCK_RUNNING;
+		break;
+	}// End of clock mode switch statement
+} // End of SettingClock function
 
 void LCD_DisplayEncoderPosition(int col, int row, int encoderPosition)
 {

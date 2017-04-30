@@ -1,18 +1,29 @@
+/**
+* < Written by Stephen Caffera & Iris LoCoco >
+* < ECE 241, Spring 2017 >
+* < Final Project: Solar Tracker>
+*
+* < Encoder.h: header file for encoder control >
+*/
+
 #ifndef ENCODER_H
 #define ENCODER_H
 
+
+// Variables to define pin numbers
 #define INTERRUPT_A 2
 #define INTERRUPT_B 3
 #define PRESS_READ 4
 #define PRESS_ERROR_INTERVAL 5
 
+// Enumerator for button state
 enum ButtonState {Idle, Wait, Low};
 
-ButtonState state = Idle;
+ButtonState state = Idle; // initialize the state to idle
 int encoderPosition = 0;
 unsigned long timer, buttonTime;
 
-boolean ButtonNextState(int input)
+boolean ButtonNextState(int input) // passes the input (high or low) as an int
 {
   switch(state)
   {

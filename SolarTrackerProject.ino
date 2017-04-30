@@ -17,6 +17,7 @@
 
 extern unsigned long solarTimer;
 extern int solarAngle;
+char Input;
 
 /**
 * Setup calls functions necessary for initializing the clock,
@@ -65,4 +66,9 @@ void loop()
 		}
     Universal_PrintAngle(solarAngle); // Prints solar angle on the line below the clock on the LCD and on the serial monitor
 	}
+
+  if (Serial.available()) // execute this portion in main loop
+  {
+      SettingClock( Serial.read()); // Use incoming character to set clock.
+  }
 } // End main loop
