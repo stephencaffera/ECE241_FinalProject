@@ -16,6 +16,8 @@ extern int hours, minutes, seconds;
 
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
+enum ClockStates = {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
+
 int[3] newTime;
 
 void Console_PrintTime()

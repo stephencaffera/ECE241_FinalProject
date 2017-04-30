@@ -6,14 +6,13 @@
 extern boolean ButtonNextState(int input);
 
 ClockStates clockState;
-boolean clockSet;
 int hours, minutes, seconds, timerError;
 unsigned long clockTimer;
 
 void ClockSetup()
 {
 	clockTimer = millis();
-  clockSet = false;
+  clockState = CLOCK_SET_HOURS;
 }
 
 boolean OneSecondPassed()
