@@ -38,8 +38,15 @@ void setup()
 * header file.
 */
 void loop()
+<<<<<<< HEAD
 { 
   while (!clockSet) // Prompts user to set clock while control variable is false (i.e. clock has not been set)
+=======
+{
+  if (millis() > solarTimer)
+{
+  while (!clockSet) // Prompts user to set clock while control variable is false
+>>>>>>> origin/master
   {
     SetTime(Serial.read()); // Allows user to set the clock via serial input monitor
   }
