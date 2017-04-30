@@ -11,14 +11,16 @@
 #define BOTTOM_ROW 1
 #define FIRST_COL 0
 #define CLEAR "                "
+#define ARRAY_LENGTH 5
 
 extern int hours, minutes, seconds;
 
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
 enum ClockStates = {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
+ClockStates clockState = CLOCK_RUNNING;
 
-int[3] newTime;
+int currentClock[ARRAY_LENGTH] = { 0, 0, 0, 0, 0, 0 };
 
 void Console_PrintTime()
 {
@@ -154,6 +156,52 @@ void SettingClock(char Input)
 		break;
 	}// End of clock mode switch statement
 } // End of SettingClock function
+
+boolean ClockSetNextState(ClockStates clockState)
+{
+ switch (clockState)
+  {
+    case CLOCK_SET_HOURS:
+      CurrentClockIndex = 0; // local variable
+      EditCurrentClockPosition(CurrentClockIndex);
+	  CurrentClockIndex = 1; // local variable
+      EditCurrentClockPosition(CurrentClockIndex);
+      Pos_State = CLOCK_SET_MINUTES;
+    case CLOCK_SET_MINUTES:
+      CurrentClockIndex = 2;
+      EditCurrentClockPosition(CurrentClockIndex);
+	  CurrentClockIndex = 3;
+      EditCurrentClockPosition(CurrentClockIndex);
+      Pos_State = CLOCK_SET_SECONDS;
+    case CLOCK_SET_SECONDS:
+      CurrentClockIndex = 4;
+      EditCurrentClockPosition(CurrentClockIndex);
+	  CurrentClockIndex = 5;
+      EditCurrentClockPosition(CurrentClockIndex);
+      break;
+    }
+   return true; //returns true when all digits have been entered
+} // end of ClockSetNextState function
+
+void EditCurrentClockPosition(int n)
+{
+  encoderPosition = 0;
+  do{
+    do
+    {
+      LcdDriver.setCursor(n, 0);
+      LcdDriver.print(encoderPosition);
+      buttonpress = ButtonNextState(digitalRead(4)); // import button press function from lab5
+    } while(buttonpress == 0);
+
+    if (buttonpress == 1)
+    {
+      currentClock[n] = encoderPosition;
+      LcdDriver.setCursor(n, 0);
+      LcdDriver.print(encoderPosition);
+    }
+  } while (currentClock[n] == 0);
+} // EditCurrentClockPosition
 
 void LCD_DisplayEncoderPosition(int col, int row, int encoderPosition)
 {

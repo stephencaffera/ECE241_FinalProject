@@ -18,6 +18,7 @@
 extern unsigned long solarTimer;
 extern int solarAngle;
 char Input;
+boolean SetClock = false;
 
 /**
 * Setup calls functions necessary for initializing the clock,
@@ -39,17 +40,15 @@ void setup()
 * header file.
 */
 void loop()
-<<<<<<< HEAD
 { 
   while (!clockSet) // Prompts user to set clock while control variable is false (i.e. clock has not been set)
-=======
 {
   if (millis() > solarTimer)
 {
   while (!clockSet) // Prompts user to set clock while control variable is false
->>>>>>> origin/master
   {
     SetTime(Serial.read()); // Allows user to set the clock via serial input monitor
+	ClockSet = ClockSetNextState(CLOCK_SET_HOURS); // ...OR, allows the user to set the clock via LCD input; see IO.h
   }
 
   AdjustSolar(ReadSolar()); // Calls AdjustSolar() continuously within the loop; timing of moving solar panel is controlled in Solar.h
