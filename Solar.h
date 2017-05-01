@@ -29,7 +29,7 @@ void AdjustSolar(float diff)
   if (voltsTotal > INSUFFICIENT_VOLTAGE)
   {
     solarAngle = Solar.read();
-  
+
     if (diff > VOLTAGE_MIDPOINT) Solar.write(--solarAngle);
     else if (diff < VOLTAGE_MIDPOINT) Solar.write(++solarAngle);
 
