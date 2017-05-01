@@ -19,30 +19,31 @@
 #define ARRAY_LENGTH 6
 #define ENCODER_PIN 4
 
-enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
+enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS}; //Enumerator for the clock state
 
 //Global variable and object declarations:
-  extern int hours, minutes, seconds;
-  extern boolean clockSet;
-  
   LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
   
   ClockStates clockState = CLOCK_SET_HOURS;
   int currentClock[ARRAY_LENGTH], newTime[3], CurrentClockIndex;
+
+  extern int hours, minutes, seconds;
+  extern boolean clockSet;
 //
 
 //Function prototypes and external functions:
   void ClockSetNextState(void);
   void Console_PrintTime(void);
   void Console_PrintAngle(int);
-  void Console_SetTime(char);
+  void Console_SetTime();
+  boolean Console_TimeChangeRequested(void);
+  void EditCurrentClockPosition(int);
   void IO_Setup(void);
   void LCD_ClearTopRow(void);
   void LCD_ClearTopRow(void);
   void LCD_DisplayEncoderPosition(int, int, int);
   void LCD_PrintAngle(int);
   void LCD_PrintTime(void);
-  void EditCurrentClockPosition(int);
   void Universal_PrintTime(void);
   void Universal_PrintAngle(int);
 
@@ -74,9 +75,8 @@ void Console_PrintAngle(int angle)
   Serial.println(" deg.\n");
 }
 
-void Console_SetTime(char input)
+void Console_SetTime()
 {
-  if (input == 'S' || input == 's')
   {
     do
     {
@@ -108,6 +108,11 @@ void Console_SetTime(char input)
       seconds = newTime[2];
     }
   }
+}
+
+boolean Console_TimeChangeRequested()
+{
+  (Serial.read() == 'S' || Serial.read() == 's') ? return true : return false;
 }
 
 void IO_Setup()

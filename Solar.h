@@ -24,13 +24,13 @@
 #define MINUTES_IN_AN_HOUR 60
 
 //Global variable and object declarations: 
-  extern int hours, minutes, seconds;
-  
   Servo Solar;
   
   unsigned long solarTimer;
   int solarAngle;
   float voltsTotal;
+
+  extern int hours, minutes, seconds;
 //
 
 //Function prototypes and external functions:

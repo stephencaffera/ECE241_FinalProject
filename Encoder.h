@@ -17,7 +17,7 @@
 enum ButtonState {Idle, Wait, Low}; //Enumerator for the button state
 
 //Global variable declarations:
-  ButtonState state = Idle; // initialize the state to idle
+  ButtonState state = Idle;
   int encoderPosition = 0;
   unsigned long timer, buttonTime;
 //
@@ -29,7 +29,7 @@ enum ButtonState {Idle, Wait, Low}; //Enumerator for the button state
   void EncoderSetup(void);
 //
 
-boolean ButtonNextState(int input) // passes the input (high or low) as an int
+boolean ButtonNextState(int input) // Passes the input (high or low) as an int
 {
   switch(state)
   {

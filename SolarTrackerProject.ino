@@ -5,10 +5,10 @@
 * 
 * < SolarTrackerProject.ino: Main file for program; control flow between header files >
 * 
-* This program is designed using Model-View-Controller (MVC) architecture.
-* Clock.h, Encoder.h, and Solar.h are header files containing the code for the model portion of the project.
-* IO.h is a header file containing the code for the view portion, and this main file,
-* SolarTrackerProject.ino acts as the controller that connects the header files and calls all the necessary functions.
+* This program is designed using the Model-View-Controller (MVC) architecture.
+* Clock.h, Encoder.h, and Solar.h are header files containing the code serving as the Model for the program.
+* IO.h is a header file containing the code serving as the View for the program. 
+* The current file, SolarTrackerProject.ino, acts as the Controller for the program; it connects the header files runs the program.
 */
 
 #include "Clock.h"
@@ -16,12 +16,20 @@
 #include "IO.h"
 #include "Solar.h"
 
-extern unsigned long solarTimer;
-extern int solarAngle;
-extern boolean clockSet;
+//Global variable declarations:
+  extern unsigned long solarTimer;
+  extern int solarAngle;
+  extern boolean clockSet;
+//
+
+//Function prototypes:
+  void setup(void);
+  void loop(void);
+//
 
 /**
-* Setup calls functions necessary for initializing the clock, the encoder functionality, the input/output and the light sennsors.
+* Setup calls functions necessary for initializing the clock, the encoder functionality, the input/output stream, and the light sennsors.
+* The setup functions in each header file prepare all the necessary variables and functions to start the program.
 */
 void setup()
 {
@@ -59,6 +67,6 @@ void loop()
     Universal_PrintAngle(solarAngle); // Prints solar angle on the line below the clock on the LCD and on the serial monitor
 	}
 
-  if (Serial.available()) Console_SetTime(Serial.read());
+  if (Serial.available()) if (Console_TimeChangeRequested()) Console_SetTime();
   if (clockSet) if (ButtonNextState(digitalRead(PRESS_READ))) ClockSetNextState;
 } // End of loop()

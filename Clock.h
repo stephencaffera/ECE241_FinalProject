@@ -13,11 +13,11 @@
 #define MULTIPLIER 10
 
 //Global variable declarations:
-  extern int currentClock[];
-
   int hours, minutes, seconds, timerError;
   unsigned long clockTimer;
   boolean clockSet;
+
+  extern in currentClock[];
 //
 
 //Function prototypes and external functions:
