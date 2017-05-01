@@ -11,22 +11,31 @@
 #define START_ANGLE 0
 #define VOLTAGE_MIDPOINT 0.5
 #define VOLT_CONVERSION_RATIO (5.0 / 1024.0)
+#define INSUFFICIENT_VOLTAGE 1.0
 #define ANGLE_TO_MINUTE_RATIO 0.25
 #define MINUTES_IN_AN_HOUR 60
 
 extern void Universal_PrintAngle(int angle);
 
+extern int hours, minutes, seconds;
+
 Servo Solar;
 unsigned long solarTimer;
 int solarAngle;
+float voltsTotal;
 
 void AdjustSolar(float diff)
 {
-  solarAngle = Solar.read();
-  Universal_PrintAngle(solarAngle);
+  if (voltsTotal > INSUFFICIENT_VOLTAGE)
+  {
+    solarAngle = Solar.read();
   
-  if (diff > VOLTAGE_MIDPOINT) Solar.write(--solarAngle);
-  else if (diff < VOLTAGE_MIDPOINT) Solar.write(++solarAngle);
+    if (diff > VOLTAGE_MIDPOINT) Solar.write(--solarAngle);
+    else if (diff < VOLTAGE_MIDPOINT) Solar.write(++solarAngle);
+
+    Universal_PrintAngle(solarAngle);
+  }
+  else SetSolarAngleFromTime();
 }
 
 float ReadSolar()
@@ -34,7 +43,7 @@ float ReadSolar()
   float lightTotal = digitalRead(PIN_TOTAL);
   float lightPart = digitalRead(PIN_PART);
 
-  float voltsTotal = lightTotal * VOLT_CONVERSION_RATIO;
+  voltsTotal = lightTotal * VOLT_CONVERSION_RATIO;
   float voltsPart = lightPart * VOLT_CONVERSION_RATIO;
 
   float voltsDiff = (voltsTotal - voltsPart);
@@ -50,7 +59,7 @@ void SolarSetup()
   solarTimer = millis();
 }
 
-void SetSolarAngleFromTime(int hours, int minutes, int seconds)
+void SetSolarAngleFromTime()
 {
   if (hours < 6 || (hours > 18 && minutes > 0)) ? solarAngle = START_ANGLE : solarAngle = ((ANGLE_TO_MINUTE_RATIO * minutes) + (ANGLE_TO_MINUTE_RATIO * MINUTES_IN_AN_HOUR * hours));
 }

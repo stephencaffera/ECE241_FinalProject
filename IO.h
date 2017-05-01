@@ -11,18 +11,16 @@
 #define BOTTOM_ROW 1
 #define FIRST_COL 0
 #define CLEAR "                "
-#define ARRAY_LENGTH 6
+#define ARRAY_LENGTH 5
 
-extern void ConcatenateArrays();
 extern int hours, minutes, seconds;
 
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
 enum ClockStates = {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
-
 ClockStates clockState = CLOCK_RUNNING;
 
-int currentClock[ARRAY_LENGTH], ;
+int currentClock[ARRAY_LENGTH] = { 0, 0, 0, 0, 0, 0 };
 
 void Console_PrintTime()
 {
@@ -110,55 +108,6 @@ void LCD_PrintTime()
   LCD.print(seconds);
 }
 
-/**
-* SettingClock is a function that processes incoming
-* characters from serial input to set the clock. If the user enters
-* the letter "S" or "s", clock-setting mode will execute.
-* @params: char Input.
-*/
-void SettingClock(char Input)
-{
-	// interpret input based on state
-	switch (clockState)
-	{
-	case CLOCK_RUNNING:
-		if (Input == 'S' || Input == 's') // If user inputs 'S' or 's'
-		{
-			clockState = CLOCK_SET_HOURS;
-			hours = 0;   // Resets clock variables to 0 before setting
-			minutes = 0;
-			seconds = 0;
-		}
-		break;
-
-	case CLOCK_SET_HOURS: //
-		if (Input >= '0' && Input <= '9')
-			hours = 10 * (hours % 10) + Input - '0';
-		else if (Input == ':')
-			clockState = CLOCK_SET_MINUTES;
-		else if (Input == 'R')
-			clockState = CLOCK_RUNNING;
-		break;
-
-	case CLOCK_SET_MINUTES: //
-		if (Input >= '0' && Input <= '9')
-			minutes = 10 * (minutes % 10) + Input - '0';
-		else if (Input == ':')
-			clockState = CLOCK_SET_SECONDS;
-		else if (Input == 'R')
-			clockState = CLOCK_RUNNING;
-		break;
-
-	case CLOCK_SET_SECONDS: //
-		if (Input >= '0' && Input <= '9')
-			seconds = 10 * (seconds % 10) + Input - '0';
-      clockSet = true;
-		else if (Input == 'R')
-			clockState = CLOCK_RUNNING;
-		break;
-	}// End of clock mode switch statement
-} // End of SettingClock function
-
 boolean ClockSetNextState(ClockStates clockState)
 {
  switch (clockState)
@@ -168,13 +117,13 @@ boolean ClockSetNextState(ClockStates clockState)
       EditCurrentClockPosition(CurrentClockIndex);
 	  CurrentClockIndex = 1; // local variable
       EditCurrentClockPosition(CurrentClockIndex);
-      Pos_State = CLOCK_SET_MINUTES;
+      clockState = CLOCK_SET_MINUTES;
     case CLOCK_SET_MINUTES:
       CurrentClockIndex = 2;
       EditCurrentClockPosition(CurrentClockIndex);
 	  CurrentClockIndex = 3;
       EditCurrentClockPosition(CurrentClockIndex);
-      Pos_State = CLOCK_SET_SECONDS;
+      clockState = CLOCK_SET_SECONDS;
     case CLOCK_SET_SECONDS:
       CurrentClockIndex = 4;
       EditCurrentClockPosition(CurrentClockIndex);
@@ -182,7 +131,8 @@ boolean ClockSetNextState(ClockStates clockState)
       EditCurrentClockPosition(CurrentClockIndex);
       break;
     }
-   return true; //returns true when all digits have been entered
+	ConcatenateArrays(); // Calls the ConcatenateArrays function to parse arrays indices into proper formats; do not move this function
+	return true; //returns true when all digits have been entered
 } // end of ClockSetNextState function
 
 void EditCurrentClockPosition(int n)
