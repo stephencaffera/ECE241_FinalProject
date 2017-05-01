@@ -17,7 +17,6 @@
 
 extern unsigned long solarTimer;
 extern int solarAngle;
-char Input;
 boolean SetClock = false;
 
 /**
