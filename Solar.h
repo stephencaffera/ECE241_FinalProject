@@ -19,6 +19,10 @@ extern void Universal_PrintAngle(int angle);
 
 extern int hours, minutes, seconds;
 
+enum ClockStates = { CLOCK_RUNNING, CLOCK_SET_HOURS,
+                    CLOCK_SET_MINUTES, CLOCK_SET_SECONDS };
+ClockStates clockState = CLOCK_RUNNING;
+
 Servo Solar;
 unsigned long solarTimer;
 int solarAngle;
@@ -29,7 +33,7 @@ void AdjustSolar(float diff)
   if (voltsTotal > INSUFFICIENT_VOLTAGE)
   {
     solarAngle = Solar.read();
-  
+
     if (diff > VOLTAGE_MIDPOINT) Solar.write(--solarAngle);
     else if (diff < VOLTAGE_MIDPOINT) Solar.write(++solarAngle);
 

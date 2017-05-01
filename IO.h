@@ -15,11 +15,12 @@
 
 extern int hours, minutes, seconds;
 
-enum ClockStates = {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
+enum ClockStates = { CLOCK_RUNNING, CLOCK_SET_HOURS, 
+                    CLOCK_SET_MINUTES, CLOCK_SET_SECONDS };
+ClockStates clockState = CLOCK_RUNNING;
 
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
-ClockStates clockState = CLOCK_RUNNING;
 int currentClock[ARRAY_LENGTH] = { 0, 0, 0, 0, 0, 0 };
 
 void Console_PrintTime()
@@ -59,7 +60,7 @@ void Console_SetTime(char input)
 
     do
     {
-      Serial.print("Enter new minutes: ");      
+      Serial.print("Enter new minutes: ");
         newTime[1] = Serial.read();
     } while (newTime[1] < 0 && newTime[1] > 59);
 
