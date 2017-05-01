@@ -43,7 +43,7 @@ void loop()
   while (!clockSet) // Prompts user to set clock while control variable is false
   {
     Console_SetTime(Serial.read()); // Allows user to set the clock via serial input monitor
-	  clockSet = ClockSetNextState(CLOCK_SET_HOURS); // ...OR, allows the user to set the clock via LCD input; see IO.h
+	  ClockSetNextState(); // ...OR, allows the user to set the clock via LCD input; see IO.h
   }
   
   if (millis() > solarTimer) AdjustSolar(ReadSolar()); // Calls AdjustSolar() continuously within the loop; timing of moving solar panel is controlled in Solar.h
@@ -60,6 +60,5 @@ void loop()
 	}
 
   if (Serial.available()) Console_SetTime(Serial.read());
-  if (clockSet) ButtonNextState(PRESS_READ);
-  if (ButtonNextState()) ClockSetNextState();
+  if (clockSet) if (ButtonNextState(PRESS_READ)) ClockSetNextState;
 } // End main loop
