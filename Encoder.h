@@ -15,12 +15,17 @@
 #define PRESS_READ 4
 #define PRESS_ERROR_INTERVAL 5
 
+extern boolean clockSet;
+
 enum ButtonState {Idle, Wait, Low}; //Enumerator for the button state
 
 ButtonState state = Idle; // initialize the state to idle
 int encoderPosition = 0;
 unsigned long timer, buttonTime;
 
+pinMode(INTERRUPT_A, INPUT);
+pinMode(INTERRUPT_B, INPUT);
+pinMode(PRESS_READ, INPUT);
 attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
 attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
 
@@ -35,22 +40,18 @@ boolean ButtonNextState(int input) // passes the input (high or low) as an int
         state = Wait;
       }
       break;
+      
     case Wait:
-      if(input == HIGH)
-      {
-        state = Idle;
-      }
+      if(input == HIGH) state = Idle;
       else if(millis() - buttonTime >= PRESS_ERROR_INTERVAL)
       {
         state = Low;
         return true;
       }
       break;
+      
     case Low:
-      if(input == HIGH)
-      {
-        state = Idle;
-      }
+      if(input == HIGH) state = Idle;
       break;
   }
   return false;
@@ -58,9 +59,6 @@ boolean ButtonNextState(int input) // passes the input (high or low) as an int
 
 void EncoderSetup()
 {
-  pinMode(INTERRUPT_A, INPUT);
-  pinMode(INTERRUPT_B, INPUT);
-  pinMode(PRESS_READ, INPUT);
   timer = millis();
 }
 

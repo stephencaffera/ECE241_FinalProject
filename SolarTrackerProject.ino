@@ -10,7 +10,6 @@
 * IO.h is a header file containing the code for the view portion, and this main file,
 * SolarTrackerProject.ino acts as the controller that calls all other header files and functions.
 */
-
 #include "Clock.h"
 #include "Encoder.h"
 #include "IO.h"
@@ -46,18 +45,9 @@ void loop()
     Console_SetTime(Serial.read()); // Allows user to set the clock via serial input monitor
 	  clockSet = ClockSetNextState(CLOCK_SET_HOURS); // ...OR, allows the user to set the clock via LCD input; see IO.h
   }
-<<<<<<< HEAD
-
-  if (millis() > solarTimer)
-  {
-  AdjustSolar(ReadSolar()); // Calls AdjustSolar() continuously within the loop; timing of moving solar panel is controlled in Solar.h
-  }
-
-=======
   
   if (millis() > solarTimer) AdjustSolar(ReadSolar()); // Calls AdjustSolar() continuously within the loop; timing of moving solar panel is controlled in Solar.h
   
->>>>>>> origin/master
 	if (OneSecondPassed()) // Calls OneSecondPassed() in Clock.h to determine if clock face needs to be updated on LCD
 	{
     UpdateClockTimer();
@@ -68,5 +58,7 @@ void loop()
 		}
     Universal_PrintAngle(solarAngle); // Prints solar angle on the line below the clock on the LCD and on the serial monitor
 	}
-  if (Serial.available()) Console_SetTime(Serial.read()); // Use incoming character to set clock.
+
+  if (Serial.available()) Console_SetTime(Serial.read());
+  
 } // End main loop
