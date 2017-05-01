@@ -17,7 +17,7 @@
 
 extern unsigned long solarTimer;
 extern int solarAngle;
-boolean SetClock = false;
+extern boolean clockSet;
 
 /**
 * Setup calls functions necessary for initializing the clock,

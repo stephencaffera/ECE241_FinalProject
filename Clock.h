@@ -6,18 +6,17 @@
 extern boolean ButtonNextState(int input);
 extern int currentClock[];
 
+enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS} clockState;
+
 int hours, minutes, seconds, timerError;
 unsigned long clockTimer;
-
-enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS,
-                    CLOCK_SET_MINUTES, CLOCK_SET_SECONDS} clockState;
-
-clockState = CLOCK_RUNNING;
+boolean clockSet;
 
 void ClockSetup()
 {
-	clockTimer = millis();
 	clockState = CLOCK_SET_HOURS;
+  clockSet = false;
+	clockTimer = millis();
 }
 
 void ConcatenateArrays()

@@ -11,17 +11,13 @@
 #define BOTTOM_ROW 1
 #define FIRST_COL 0
 #define CLEAR "                "
-#define ARRAY_LENGTH 5
+#define ARRAY_LENGTH 6
 
 extern int hours, minutes, seconds;
 
-enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, 
-                    CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
-ClockStates clockState = CLOCK_RUNNING;
-
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
-int currentClock[ARRAY_LENGTH] = { 0, 0, 0, 0, 0, 0 };
+int currentClock[ARRAY_LENGTH], newTime[3];
 
 void Console_PrintTime()
 {
