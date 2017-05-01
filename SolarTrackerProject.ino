@@ -1,5 +1,5 @@
 /**
-* < Written by Stephen Caffera and Iris LoCoco >
+* < Written by Stephen Caffera & Iris LoCoco >
 * < ECE 241, Spring 2017 >
 * < Final Project: Solar Tracker >
 * 
@@ -8,7 +8,7 @@
 * This program is designed using the Model-View-Controller (MVC) architecture.
 * Clock.h, Encoder.h, and Solar.h are header files containing the code serving as the Model for the program.
 * IO.h is a header file containing the code serving as the View for the program. 
-* The current file, SolarTrackerProject.ino, acts as the Controller for the program; it connects the header files runs the program.
+* SolarTrackerProject.ino is an Arduino source file containing the code serving as the Controller for the program.
 */
 
 #include "Clock.h"
@@ -50,20 +50,17 @@ void loop()
 {
   while (!clockSet) // Prompts user to set clock while control variable is false
   {
-    Console_SetTime(Serial.read()); // Allows user to set the clock via serial input monitor
+    Console_SetTime(); // Allows user to set the clock via serial input monitor
 	  ClockSetNextState(); // ...OR, allows the user to set the clock via LCD input; see IO.h
   }
   
-  if (millis() > solarTimer) AdjustSolar(ReadSolar()); // Calls AdjustSolar() continuously within the loop; timing of moving solar panel is controlled in Solar.h
+  if (millis() > solarTimer) AdjustSolar(ReadSolar()); // Continually adjusts the Servo to respond to changes in the direction of its light source
   
-	if (OneSecondPassed()) // Calls OneSecondPassed() in Clock.h to determine if clock face needs to be updated on LCD
+	if (OneSecondPassed()) // Determines if clock face needs to be updated and reprinted
 	{
-    UpdateClockTimer();
-		if (clockSet) // Only updates and prints clock if it is running
-		{
-		  UpdateClock(); // Updates the time by one second
-		  Universal_PrintTime(); // Prints the clock face on the top line of the LCD and on the serial monitor
-		}
+    UpdateClockTimer(); // Resets the clock timer and adjusts for time error
+    UpdateClock(); // Updates the time by one second
+		if (clockSet) Universal_PrintTime(); // Prints the clock face on the top line of the LCD and on the serial monitor; only prints if the clock is running
     Universal_PrintAngle(solarAngle); // Prints solar angle on the line below the clock on the LCD and on the serial monitor
 	}
 

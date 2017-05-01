@@ -20,7 +20,7 @@
   extern in currentClock[];
 //
 
-//Function prototypes and external functions:
+//Function prototypes and external function declarations:
   void ClockSetup(void);
   void ConcatenateArrays(void);
   boolean OneSecondPassed(void);

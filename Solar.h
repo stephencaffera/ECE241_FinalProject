@@ -33,14 +33,13 @@
   extern int hours, minutes, seconds;
 //
 
-//Function prototypes and external functions:
+//Function prototypes and external function declarations:
   void AdjustSolar(float);
   float ReadSolar(void);
   void SetSolarAngleFromTime(void);
   void SolarSetup(void);
 
   extern void Universal_PrintAngle(int angle);
-
 //
 
 void AdjustSolar(float diff)
@@ -55,7 +54,7 @@ void AdjustSolar(float diff)
     Universal_PrintAngle(solarAngle);
   }
   else SetSolarAngleFromTime();
-}
+} // End of AdjustSolar()
 
 float ReadSolar()
 {
@@ -68,12 +67,12 @@ float ReadSolar()
   float voltsDiff = (voltsTotal - voltsPart);
 
   return voltsDiff;
-}
+} // End of ReadSolar()
 
 void SetSolarAngleFromTime()
 {
   (hours < 6 || (hours >= 18 && minutes > 0)) ? solarAngle = START_ANGLE : solarAngle = ((ANGLE_TO_MINUTE_RATIO * minutes) + (ANGLE_TO_MINUTE_RATIO * MINUTES_IN_AN_HOUR * hours));
-}
+} // End of SetSolarAngleFromTime()
 
 void SolarSetup()
 {
@@ -81,6 +80,6 @@ void SolarSetup()
   pinMode(PIN_TOTAL, INPUT);
   pinMode(PIN_PART, INPUT);
   solarTimer = millis();
-}
+} // End of SolarSetup()
 
 #endif

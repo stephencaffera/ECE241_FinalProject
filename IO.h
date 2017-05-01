@@ -31,7 +31,7 @@ enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_S
   extern boolean clockSet;
 //
 
-//Function prototypes and external functions:
+//Function prototypes and external function declarations:
   void ClockSetNextState(void);
   void Console_PrintTime(void);
   void Console_PrintAngle(int);
@@ -41,7 +41,6 @@ enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_S
   void IO_Setup(void);
   void LCD_ClearTopRow(void);
   void LCD_ClearTopRow(void);
-  void LCD_DisplayEncoderPosition(int, int, int);
   void LCD_PrintAngle(int);
   void LCD_PrintTime(void);
   void Universal_PrintTime(void);
@@ -66,60 +65,57 @@ void Console_PrintTime()
   if (seconds < 10) Serial.print("0");
 
   Serial.println(seconds);
-}
+} // End of Console_PrintTime()
 
 void Console_PrintAngle(int angle)
 {
   Serial.print("Angle: ");
   Serial.println(angle);
   Serial.println(" deg.\n");
-}
+} //End of Console_PrintAngle()
 
 void Console_SetTime()
 {
+  do
   {
-    do
-    {
-      Serial.print("Enter new hours: ");
-        newTime[0] = Serial.read();
-    } while (newTime[0] < 0 && newTime[0] > 23);
+    Serial.print("Enter new hours: ");
+      newTime[0] = Serial.read();
+  } while (newTime[0] < 0 && newTime[0] > 23);
 
-    do
-    {
-      Serial.print("Enter new minutes: ");
-        newTime[1] = Serial.read();
-    } while (newTime[1] < 0 && newTime[1] > 59);
+  do
+  {
+    Serial.print("Enter new minutes: ");
+      newTime[1] = Serial.read();
+  } while (newTime[1] < 0 && newTime[1] > 59);
 
-    do
-    {
-      Serial.print("Enter new seconds: ");
-        newTime[2] = Serial.read();
-    } while (newTime[2] < 0 && newTime[2] > 59);
+  do
+  {
+    Serial.print("Enter new seconds: ");
+      newTime[2] = Serial.read();
+  } while (newTime[2] < 0 && newTime[2] > 59);
 
-    Serial.print("Changing time to ");
-    Console_PrintTime();
-    Serial.print("Confirm (Y/N): ");
-      char confirm = Serial.read();
+  Serial.print("Changing time to ");
+  Console_PrintTime();
+  Serial.print("Confirm (Y/N): ");
 
-    if (confirm == 'Y' || confirm == 'y')
-    {
-      hours = newTime[0];
-      minutes = newTime[1];
-      seconds = newTime[2];
-    }
+  if (Serial.read() == 'Y' || Serial.read() == 'y')
+  {
+    hours = newTime[0];
+    minutes = newTime[1];
+    seconds = newTime[2];
   }
-}
+} // End of Console_SetTime()
 
 boolean Console_TimeChangeRequested()
 {
   (Serial.read() == 'S' || Serial.read() == 's') ? return true : return false;
-}
+} // End of Console_TimeChangeRequested()
 
 void IO_Setup()
 {
   Serial.begin(BAUD_RATE);
   LCD.clear();
-}
+} // End of IO_Setup
 
 void LCD_PrintTime()
 {
@@ -138,7 +134,7 @@ void LCD_PrintTime()
   if (seconds < 10) LCD.print("0");
 
   LCD.print(seconds);
-}
+} // End of LCD_PrintTime()
 
 void ClockSetNextState()
 {
@@ -176,7 +172,7 @@ void ClockSetNextState()
       clockSet = true;
       break;
     }
-} // End of ClockSetNextState function
+} // End of ClockSetNextState()
 
 void EditCurrentClockPosition(int n)
 {
@@ -195,26 +191,19 @@ void EditCurrentClockPosition(int n)
       LCD.print(encoderPosition);
     }
   } while (currentClock[n] == 0);
-} // EditCurrentClockPosition
-
-void LCD_DisplayEncoderPosition(int col, int row, int encoderPosition)
-{
-    static int encoderCount = encoderPosition / 4;
-    LCD.setCursor(col, row);
-    LCD.print(encoderCount);
-}
+} // End of EditCurrentClockPosition()
 
 void LCD_ClearBottomRow()
 {
   LCD.setCursor(FIRST_COL, BOTTOM_ROW);
   LCD.print(CLEAR);
-}
+} // End of LCD_ClearBottomRow()
 
 void LCD_ClearTopRow()
 {
   LCD.setCursor(FIRST_COL, TOP_ROW);
   LCD.print(CLEAR);
-}
+} // End of LCD_ClearTopRow()
 
 void LCD_PrintAngle(int angle)
 {
@@ -223,18 +212,18 @@ void LCD_PrintAngle(int angle)
   LCD.print("Angle: ");
   LCD.print(angle);
   LCD.print(" deg.");
-}
+} // End of LCD_PrintAngle()
 
 void Universal_PrintTime()
 {
   Console_PrintTime();
   LCD_PrintTime();
-}
+} // End of Universal_PrintTime()
 
 void Universal_PrintAngle(int angle)
 {
   Console_PrintAngle(angle);
   LCD_PrintAngle(angle);
-}
+} // End of Universal_PrintAngle()
 
 #endif
