@@ -60,5 +60,5 @@ void loop()
 	}
 
   if (Serial.available()) Console_SetTime(Serial.read());
-  if (clockSet) if (ButtonNextState(PRESS_READ)) ClockSetNextState;
+  if (clockSet) if (ButtonNextState(digitalRead(PRESS_READ))) ClockSetNextState;
 } // End main loop
