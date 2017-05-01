@@ -10,6 +10,7 @@
 #define CLOCK_H
 
 #define CLOCK_INTERVAL 1000
+#define MULTIPLIER 10
 
 extern boolean ButtonNextState(int input);
 extern int currentClock[];
@@ -17,6 +18,14 @@ extern int currentClock[];
 int hours, minutes, seconds, timerError;
 unsigned long clockTimer;
 boolean clockSet;
+
+//Function prototypes:
+  void ClockSetup(void);
+  void ConcatenateArrays(void);
+  boolean OneSecondPassed(void);
+  void UpdateClockTimer(void);
+  void UpdateClock(void);
+//
 
 void ClockSetup()
 {
@@ -26,9 +35,9 @@ void ClockSetup()
 
 void ConcatenateArrays()
 {
-	hours = (currentClock[0] * 10) + currentClock[1];
-	minutes = (currentClock[2] * 10) + currentClock[3];
-	seconds = (currentClock[4] * 10) + currentClock[5];
+	hours = (currentClock[0] * MULTIPLIER) + currentClock[1];
+	minutes = (currentClock[2] * MULTIPLIER) + currentClock[3];
+	seconds = (currentClock[4] * MULTIPLIER) + currentClock[5];
 }
 
 boolean OneSecondPassed()

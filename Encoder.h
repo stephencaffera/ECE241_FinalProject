@@ -9,7 +9,6 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-// Macros to define pin numbers and the error time for the encoder presses
 #define INTERRUPT_A 2
 #define INTERRUPT_B 3
 #define PRESS_READ 4
@@ -21,8 +20,13 @@ ButtonState state = Idle; // initialize the state to idle
 int encoderPosition = 0;
 unsigned long timer, buttonTime;
 
-void MonitorA(void);
-void MonitorB(void);
+//Function prototypes:
+  boolean ButtonNextState(int);
+  void MonitorA(void);
+  void MonitorB(void);
+  void EncoderSetup(void);
+
+//
 
 boolean ButtonNextState(int input) // passes the input (high or low) as an int
 {
@@ -60,11 +64,6 @@ void EncoderSetup()
   attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
   attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
   timer = millis();
-}
-
-int GetPress()
-{
-  return digitalRead(PRESS_READ);
 }
 
 void MonitorA()

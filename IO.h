@@ -30,9 +30,21 @@ LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
 int currentClock[ARRAY_LENGTH], newTime[3], CurrentClockIndex;
 
-void LCD_ClearTopRow(void);
-void EditCurrentClockPosition(int);
-
+//Function prototypes:
+  void ClockSetNextState(void);
+  void Console_PrintTime(void);
+  void Console_PrintAngle(int);
+  void Console_SetTime(char);
+  void IO_Setup(void);
+  void LCD_ClearTopRow(void);
+  void LCD_ClearTopRow(void);
+  void LCD_DisplayEncoderPosition(int, int, int);
+  void LCD_PrintAngle(int);
+  void LCD_PrintTime(void);
+  void EditCurrentClockPosition(int);
+  void Universal_PrintTime(void);
+  void Universal_PrintAngle(int);
+//
 
 void Console_PrintTime()
 {
