@@ -108,55 +108,6 @@ void LCD_PrintTime()
   LCD.print(seconds);
 }
 
-/**
-* SettingClock is a function that processes incoming
-* characters from serial input to set the clock. If the user enters
-* the letter "S" or "s", clock-setting mode will execute.
-* @params: char Input.
-*/
-void SettingClock(char Input)
-{
-	// interpret input based on state
-	switch (clockState)
-	{
-	case CLOCK_RUNNING:
-		if (Input == 'S' || Input == 's') // If user inputs 'S' or 's'
-		{
-			clockState = CLOCK_SET_HOURS;
-			hours = 0;   // Resets clock variables to 0 before setting
-			minutes = 0;
-			seconds = 0;
-		}
-		break;
-
-	case CLOCK_SET_HOURS: //
-		if (Input >= '0' && Input <= '9')
-			hours = 10 * (hours % 10) + Input - '0';
-		else if (Input == ':')
-			clockState = CLOCK_SET_MINUTES;
-		else if (Input == 'R')
-			clockState = CLOCK_RUNNING;
-		break;
-
-	case CLOCK_SET_MINUTES: //
-		if (Input >= '0' && Input <= '9')
-			minutes = 10 * (minutes % 10) + Input - '0';
-		else if (Input == ':')
-			clockState = CLOCK_SET_SECONDS;
-		else if (Input == 'R')
-			clockState = CLOCK_RUNNING;
-		break;
-
-	case CLOCK_SET_SECONDS: //
-		if (Input >= '0' && Input <= '9')
-			seconds = 10 * (seconds % 10) + Input - '0';
-      clockSet = true;
-		else if (Input == 'R')
-			clockState = CLOCK_RUNNING;
-		break;
-	}// End of clock mode switch statement
-} // End of SettingClock function
-
 boolean ClockSetNextState(ClockStates clockState)
 {
  switch (clockState)
@@ -166,13 +117,13 @@ boolean ClockSetNextState(ClockStates clockState)
       EditCurrentClockPosition(CurrentClockIndex);
 	  CurrentClockIndex = 1; // local variable
       EditCurrentClockPosition(CurrentClockIndex);
-      Pos_State = CLOCK_SET_MINUTES;
+      clockState = CLOCK_SET_MINUTES;
     case CLOCK_SET_MINUTES:
       CurrentClockIndex = 2;
       EditCurrentClockPosition(CurrentClockIndex);
 	  CurrentClockIndex = 3;
       EditCurrentClockPosition(CurrentClockIndex);
-      Pos_State = CLOCK_SET_SECONDS;
+      clockState = CLOCK_SET_SECONDS;
     case CLOCK_SET_SECONDS:
       CurrentClockIndex = 4;
       EditCurrentClockPosition(CurrentClockIndex);
