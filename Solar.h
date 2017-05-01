@@ -1,3 +1,11 @@
+/**
+* < Written by Stephen Caffera & Iris LoCoco >
+* < ECE 241, Spring 2017 >
+* < Final Project: Solar Tracker>
+*
+* < Encoder.h: header file for Servo control >
+*/
+
 #ifndef SOLAR_H
 #define SOLAR_H
 

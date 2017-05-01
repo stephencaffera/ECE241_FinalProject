@@ -1,3 +1,11 @@
+/**
+* < Written by Stephen Caffera & Iris LoCoco >
+* < ECE 241, Spring 2017 >
+* < Final Project: Solar Tracker>
+*
+* < Clock.h: header file for clock control >
+*/
+
 #ifndef CLOCK_H
 #define CLOCK_H
 

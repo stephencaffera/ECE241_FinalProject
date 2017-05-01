@@ -2,14 +2,15 @@
 * < Written by Stephen Caffera and Iris LoCoco >
 * < ECE 241, Spring 2017 >
 * < Final Project: Solar Tracker >
-*/
-
-/**
+* 
+* < SolarTrackerProject.ino: Main file for program; control flow between header files >
+* 
 * This program is designed using Model-View-Controller (MVC) architecture.
 * Clock.h, Encoder.h, and Solar.h are header files containing the code for the model portion of the project.
 * IO.h is a header file containing the code for the view portion, and this main file,
 * SolarTrackerProject.ino acts as the controller that calls all other header files and functions.
 */
+
 #include "Clock.h"
 #include "Encoder.h"
 #include "IO.h"

@@ -1,10 +1,15 @@
+/**
+* < Written by Stephen Caffera & Iris LoCoco >
+* < ECE 241, Spring 2017 >
+* < Final Project: Solar Tracker>
+*
+* < IO.h: header file for input/output control >
+*/
+
 #ifndef IO_H
 #define IO_H
 
 #include <LiquidCrystal.h>
-/*
-#include <stdio.h> //Add formatted printing using sprintf()
-*/
 
 #define BAUD_RATE 9600
 #define TOP_ROW 0
