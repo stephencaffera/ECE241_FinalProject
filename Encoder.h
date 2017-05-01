@@ -16,16 +16,17 @@
 
 enum ButtonState {Idle, Wait, Low}; //Enumerator for the button state
 
-ButtonState state = Idle; // initialize the state to idle
-int encoderPosition = 0;
-unsigned long timer, buttonTime;
+//Global variable declarations:
+  ButtonState state = Idle; // initialize the state to idle
+  int encoderPosition = 0;
+  unsigned long timer, buttonTime;
+//
 
 //Function prototypes:
   boolean ButtonNextState(int);
   void MonitorA(void);
   void MonitorB(void);
   void EncoderSetup(void);
-
 //
 
 boolean ButtonNextState(int input) // passes the input (high or low) as an int
@@ -54,7 +55,7 @@ boolean ButtonNextState(int input) // passes the input (high or low) as an int
       break;
   }
   return false;
-}
+} // End of ButtonNextState()
 
 void EncoderSetup()
 {
@@ -64,7 +65,7 @@ void EncoderSetup()
   attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
   attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
   timer = millis();
-}
+} // End of EncoderSetup()
 
 void MonitorA()
 {
@@ -76,7 +77,7 @@ void MonitorA()
   {
     encoderPosition--;
   }
-}
+} // End of MonitorA()
 
 void MonitorB()
 {
@@ -88,6 +89,6 @@ void MonitorB()
   {
     encoderPosition++;
   }
-}
+} // End of MonitorB()
 
 #endif

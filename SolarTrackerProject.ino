@@ -21,8 +21,7 @@ extern int solarAngle;
 extern boolean clockSet;
 
 /**
-* Setup calls functions necessary for initializing the clock,
-* the encoder functionality, and the photoreactors.
+* Setup calls functions necessary for initializing the clock, the encoder functionality, the input/output and the light sennsors.
 */
 void setup()
 {
@@ -30,7 +29,7 @@ void setup()
 	EncoderSetup();
   SolarSetup();
 	ClockSetup();
-} // End setup
+} // End of setup()
 
 /**
 * In the main loop of the program, the clock is set based on user input to the
@@ -62,4 +61,4 @@ void loop()
 
   if (Serial.available()) Console_SetTime(Serial.read());
   if (clockSet) if (ButtonNextState(digitalRead(PRESS_READ))) ClockSetNextState;
-} // End main loop
+} // End of loop()

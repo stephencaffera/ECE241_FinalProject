@@ -12,33 +12,36 @@
 #define CLOCK_INTERVAL 1000
 #define MULTIPLIER 10
 
-extern boolean ButtonNextState(int input);
-extern int currentClock[];
+//Global variable declarations:
+  extern int currentClock[];
 
-int hours, minutes, seconds, timerError;
-unsigned long clockTimer;
-boolean clockSet;
+  int hours, minutes, seconds, timerError;
+  unsigned long clockTimer;
+  boolean clockSet;
+//
 
-//Function prototypes:
+//Function prototypes and external functions:
   void ClockSetup(void);
   void ConcatenateArrays(void);
   boolean OneSecondPassed(void);
   void UpdateClockTimer(void);
   void UpdateClock(void);
+
+  extern boolean ButtonNextState(int input);
 //
 
 void ClockSetup()
 {
   clockSet = false;
 	clockTimer = millis();
-}
+} // End of ClockSetup()
 
 void ConcatenateArrays()
 {
 	hours = (currentClock[0] * MULTIPLIER) + currentClock[1];
 	minutes = (currentClock[2] * MULTIPLIER) + currentClock[3];
 	seconds = (currentClock[4] * MULTIPLIER) + currentClock[5];
-}
+} // End of ConcatenateArrays()
 
 boolean OneSecondPassed()
 {
@@ -48,12 +51,12 @@ boolean OneSecondPassed()
 	  return true;
 	}
 	else return false;
-}
+} // End of OneSecondPassed()
 
 void UpdateClockTimer()
 {
 	clockTimer += (CLOCK_INTERVAL - timerError);
-}
+} // End of UpdateClockTimer()
 
 void UpdateClock()
 {
@@ -74,6 +77,6 @@ void UpdateClock()
 			}
 		}
 	}
-}
+} // End of UpdateClock()
 
 #endif

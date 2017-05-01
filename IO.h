@@ -19,18 +19,19 @@
 #define ARRAY_LENGTH 6
 #define ENCODER_PIN 4
 
-extern boolean ButtonNextState(int);
-extern int hours, minutes, seconds;
-extern boolean clockSet;
-
 enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
-ClockStates clockState = CLOCK_SET_HOURS;
 
-LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
+//Global variable and object declarations:
+  extern int hours, minutes, seconds;
+  extern boolean clockSet;
+  
+  LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
+  
+  ClockStates clockState = CLOCK_SET_HOURS;
+  int currentClock[ARRAY_LENGTH], newTime[3], CurrentClockIndex;
+//
 
-int currentClock[ARRAY_LENGTH], newTime[3], CurrentClockIndex;
-
-//Function prototypes:
+//Function prototypes and external functions:
   void ClockSetNextState(void);
   void Console_PrintTime(void);
   void Console_PrintAngle(int);
@@ -44,6 +45,8 @@ int currentClock[ARRAY_LENGTH], newTime[3], CurrentClockIndex;
   void EditCurrentClockPosition(int);
   void Universal_PrintTime(void);
   void Universal_PrintAngle(int);
+
+  extern boolean ButtonNextState(int);
 //
 
 void Console_PrintTime()

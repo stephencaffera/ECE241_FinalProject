@@ -23,20 +23,24 @@
 #define ANGLE_TO_MINUTE_RATIO 0.25
 #define MINUTES_IN_AN_HOUR 60
 
-extern void Universal_PrintAngle(int angle);
+//Global variable and object declarations: 
+  extern int hours, minutes, seconds;
+  
+  Servo Solar;
+  
+  unsigned long solarTimer;
+  int solarAngle;
+  float voltsTotal;
+//
 
-extern int hours, minutes, seconds;
-
-Servo Solar;
-unsigned long solarTimer;
-int solarAngle;
-float voltsTotal;
-
-//Function prototypes:
+//Function prototypes and external functions:
   void AdjustSolar(float);
   float ReadSolar(void);
   void SetSolarAngleFromTime(void);
   void SolarSetup(void);
+
+  extern void Universal_PrintAngle(int angle);
+
 //
 
 void AdjustSolar(float diff)
@@ -68,7 +72,7 @@ float ReadSolar()
 
 void SetSolarAngleFromTime()
 {
-  (hours < 6 || (hours > 18 && minutes > 0)) ? solarAngle = START_ANGLE : solarAngle = ((ANGLE_TO_MINUTE_RATIO * minutes) + (ANGLE_TO_MINUTE_RATIO * MINUTES_IN_AN_HOUR * hours));
+  (hours < 6 || (hours >= 18 && minutes > 0)) ? solarAngle = START_ANGLE : solarAngle = ((ANGLE_TO_MINUTE_RATIO * minutes) + (ANGLE_TO_MINUTE_RATIO * MINUTES_IN_AN_HOUR * hours));
 }
 
 void SolarSetup()
