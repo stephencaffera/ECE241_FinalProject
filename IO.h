@@ -14,6 +14,7 @@
 #define ARRAY_LENGTH 6
 
 extern int hours, minutes, seconds;
+extern boolean clockSet;
 
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
@@ -105,32 +106,43 @@ void LCD_PrintTime()
   LCD.print(seconds);
 }
 
-boolean ClockSetNextState(ClockStates clockState)
+void ClockSetNextState(ClockStates clockState)
 {
  switch (clockState)
   {
     case CLOCK_SET_HOURS:
       CurrentClockIndex = 0; // local variable
       EditCurrentClockPosition(CurrentClockIndex);
-	  CurrentClockIndex = 1; // local variable
+      
+	    CurrentClockIndex = 1; // local variable
       EditCurrentClockPosition(CurrentClockIndex);
+      
       clockState = CLOCK_SET_MINUTES;
+      break;
+      
     case CLOCK_SET_MINUTES:
       CurrentClockIndex = 2;
       EditCurrentClockPosition(CurrentClockIndex);
-	  CurrentClockIndex = 3;
+      
+	    CurrentClockIndex = 3;
       EditCurrentClockPosition(CurrentClockIndex);
+      
       clockState = CLOCK_SET_SECONDS;
+      break;
+      
     case CLOCK_SET_SECONDS:
       CurrentClockIndex = 4;
       EditCurrentClockPosition(CurrentClockIndex);
-	  CurrentClockIndex = 5;
+      
+	    CurrentClockIndex = 5;
       EditCurrentClockPosition(CurrentClockIndex);
+    
+      clockSet = false;
+      ConcatenateArrays(); // Calls the ConcatenateArrays function to parse arrays indices into proper formats
+      clockSet = true;
       break;
     }
-	ConcatenateArrays(); // Calls the ConcatenateArrays function to parse arrays indices into proper formats; do not move this function
-	return true; //returns true when all digits have been entered
-} // end of ClockSetNextState function
+} // End of ClockSetNextState function
 
 void EditCurrentClockPosition(int n)
 {
@@ -138,16 +150,16 @@ void EditCurrentClockPosition(int n)
   do{
     do
     {
-      LcdDriver.setCursor(n, 0);
-      LcdDriver.print(encoderPosition);
+      LCD.setCursor(n, 0);
+      LCD.print(encoderPosition);
       buttonpress = ButtonNextState(digitalRead(4)); // import button press function from lab5
     } while(buttonpress == 0);
 
     if (buttonpress == 1)
     {
       currentClock[n] = encoderPosition;
-      LcdDriver.setCursor(n, 0);
-      LcdDriver.print(encoderPosition);
+      LCD.setCursor(n, 0);
+      LCD.print(encoderPosition);
     }
   } while (currentClock[n] == 0);
 } // EditCurrentClockPosition
