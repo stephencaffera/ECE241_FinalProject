@@ -1,5 +1,5 @@
-#ifndef CLOCK_H
-#define CLOCK_H
+#ifndef Clock_H
+#define Clock_H
 
 #define CLOCK_INTERVAL 1000
 
