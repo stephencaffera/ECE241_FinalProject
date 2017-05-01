@@ -32,6 +32,8 @@ unsigned long solarTimer;
 int solarAngle;
 float voltsTotal;
 
+void SetSolarAngleFromTime(void);
+
 void AdjustSolar(float diff)
 {
   if (voltsTotal < INSUFFICIENT_VOLTAGE)

@@ -19,6 +19,7 @@
 #define ARRAY_LENGTH 6
 #define ENCODER_PIN 4
 
+extern boolean ButtonNextState(int);
 extern int hours, minutes, seconds;
 extern boolean clockSet;
 
@@ -28,7 +29,10 @@ ClockStates clockState = CLOCK_SET_HOURS;
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
 int currentClock[ARRAY_LENGTH], newTime[3], CurrentClockIndex;
-boolean buttonPressed = false;
+
+void LCD_ClearTopRow(void);
+void EditCurrentClockPosition(int);
+
 
 void Console_PrintTime()
 {
@@ -162,10 +166,9 @@ void EditCurrentClockPosition(int n)
     {
       LCD.setCursor(n, 0);
       LCD.print(encoderPosition);
-      buttonpPressed = ButtonNextState(digitalRead(ENCODER_PIN));
-    } while(!buttonPressed);
+    } while(!ButtonNextState(digitalRead(ENCODER_PIN)));
 
-    if (buttonPressed)
+    if (ButtonNextState(digitalRead(ENCODER_PIN)))
     {
       currentClock[n] = encoderPosition;
       LCD.setCursor(n, 0);

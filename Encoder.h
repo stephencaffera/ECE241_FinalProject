@@ -21,12 +21,8 @@ ButtonState state = Idle; // initialize the state to idle
 int encoderPosition = 0;
 unsigned long timer, buttonTime;
 
-pinMode(INTERRUPT_A, INPUT);
-pinMode(INTERRUPT_B, INPUT);
-pinMode(PRESS_READ, INPUT);
-attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
-attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
-Serial.begin(9600);
+void MonitorA(void);
+void MonitorB(void);
 
 boolean ButtonNextState(int input) // passes the input (high or low) as an int
 {
@@ -58,6 +54,11 @@ boolean ButtonNextState(int input) // passes the input (high or low) as an int
 
 void EncoderSetup()
 {
+  pinMode(INTERRUPT_A, INPUT);
+  pinMode(INTERRUPT_B, INPUT);
+  pinMode(PRESS_READ, INPUT);
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
   timer = millis();
 }
 

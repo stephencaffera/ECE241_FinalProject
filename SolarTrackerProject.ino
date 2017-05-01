@@ -8,7 +8,7 @@
 * This program is designed using Model-View-Controller (MVC) architecture.
 * Clock.h, Encoder.h, and Solar.h are header files containing the code for the model portion of the project.
 * IO.h is a header file containing the code for the view portion, and this main file,
-* SolarTrackerProject.ino acts as the controller that calls all other header files and functions.
+* SolarTrackerProject.ino acts as the controller that connects the header files and calls all the necessary functions.
 */
 
 #include "Clock.h"
