@@ -26,6 +26,7 @@ pinMode(INTERRUPT_B, INPUT);
 pinMode(PRESS_READ, INPUT);
 attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
 attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
+Serial.begin(9600);
 
 boolean ButtonNextState(int input) // passes the input (high or low) as an int
 {
