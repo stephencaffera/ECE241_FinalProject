@@ -40,21 +40,18 @@ void setup()
 * header file.
 */
 void loop()
-{ 
-  while (!clockSet) // Prompts user to set clock while control variable is false (i.e. clock has not been set)
-{
-  if (millis() > solarTimer)
 {
   while (!clockSet) // Prompts user to set clock while control variable is false
   {
     SetTime(Serial.read()); // Allows user to set the clock via serial input monitor
-	ClockSet = ClockSetNextState(CLOCK_SET_HOURS); // ...OR, allows the user to set the clock via LCD input; see IO.h
+	  clockSet = ClockSetNextState(CLOCK_SET_HOURS); // ...OR, allows the user to set the clock via LCD input; see IO.h
   }
-
-  AdjustSolar(ReadSolar()); // Calls AdjustSolar() continuously within the loop; timing of moving solar panel is controlled in Solar.h
-  if (Serial.available()) Console_SetTime(Serial.read());
   
-
+  if (millis() > solarTimer)
+  {
+  AdjustSolar(ReadSolar()); // Calls AdjustSolar() continuously within the loop; timing of moving solar panel is controlled in Solar.h
+  }
+  
 	if (OneSecondPassed()) // Calls OneSecondPassed() in Clock.h to determine if clock face needs to be updated on LCD
 	{
     UpdateClockTimer();
@@ -66,8 +63,5 @@ void loop()
     Universal_PrintAngle(solarAngle); // Prints solar angle on the line below the clock on the LCD and on the serial monitor
 	}
 
-  if (Serial.available()) // execute this portion in main loop
-  {
-      SettingClock( Serial.read()); // Use incoming character to set clock.
-  }
+  if (Serial.available()) SettingClock(Serial.read()); // Use incoming character to set clock.
 } // End main loop
