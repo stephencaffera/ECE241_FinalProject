@@ -11,7 +11,7 @@
 #define START_ANGLE 0
 #define VOLTAGE_MIDPOINT 0.5
 #define VOLT_CONVERSION_RATIO (5.0 / 1024.0)
-#define INSUFFICIENT_VOLTAGE 1.0
+#define INSUFFICIENT_VOLTAGE 4.0
 #define ANGLE_TO_MINUTE_RATIO 0.25
 #define MINUTES_IN_AN_HOUR 60
 
@@ -26,7 +26,7 @@ float voltsTotal;
 
 void AdjustSolar(float diff)
 {
-  if (voltsTotal > INSUFFICIENT_VOLTAGE)
+  if (voltsTotal < INSUFFICIENT_VOLTAGE)
   {
     solarAngle = Solar.read();
 
