@@ -4,8 +4,9 @@
 #define CLOCK_INTERVAL 1000
 
 extern boolean ButtonNextState(int input);
+extern enum ClockStates clockState;
+extern int currentClock[];
 
-ClockStates clockState;
 int hours, minutes, seconds, timerError;
 unsigned long clockTimer;
 

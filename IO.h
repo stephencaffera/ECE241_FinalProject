@@ -15,11 +15,11 @@
 
 extern int hours, minutes, seconds;
 
+enum ClockStates = {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
+
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
-enum ClockStates = {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS};
 ClockStates clockState = CLOCK_RUNNING;
-
 int currentClock[ARRAY_LENGTH] = { 0, 0, 0, 0, 0, 0 };
 
 void Console_PrintTime()
