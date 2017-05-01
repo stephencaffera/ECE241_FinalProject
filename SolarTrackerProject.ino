@@ -61,6 +61,4 @@ void loop()
 		}
     Universal_PrintAngle(solarAngle); // Prints solar angle on the line below the clock on the LCD and on the serial monitor
 	}
-
-  if (Serial.available()) SettingClock(Serial.read()); // Use incoming character to set clock.
 } // End main loop
