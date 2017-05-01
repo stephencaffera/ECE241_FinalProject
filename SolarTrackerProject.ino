@@ -60,5 +60,6 @@ void loop()
 	}
 
   if (Serial.available()) Console_SetTime(Serial.read());
-  
+  if (clockSet) ButtonNextState(PRESS_READ);
+  if (ButtonNextState()) ClockSetNextState();
 } // End main loop

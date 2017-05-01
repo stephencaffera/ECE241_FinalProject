@@ -16,6 +16,9 @@
 extern int hours, minutes, seconds;
 extern boolean clockSet;
 
+enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS} clockState;
+clockState = CLOCK_SET_HOURS;
+
 LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
 
 int currentClock[ARRAY_LENGTH], newTime[3];
@@ -106,7 +109,7 @@ void LCD_PrintTime()
   LCD.print(seconds);
 }
 
-void ClockSetNextState(ClockStates clockState)
+void ClockSetNextState()
 {
  switch (clockState)
   {

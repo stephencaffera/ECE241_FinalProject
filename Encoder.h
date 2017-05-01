@@ -15,8 +15,6 @@
 #define PRESS_READ 4
 #define PRESS_ERROR_INTERVAL 5
 
-extern boolean clockSet;
-
 enum ButtonState {Idle, Wait, Low}; //Enumerator for the button state
 
 ButtonState state = Idle; // initialize the state to idle
