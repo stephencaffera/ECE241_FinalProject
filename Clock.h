@@ -12,7 +12,14 @@ unsigned long clockTimer;
 void ClockSetup()
 {
 	clockTimer = millis();
-  clockState = CLOCK_SET_HOURS;
+	clockState = CLOCK_SET_HOURS;
+}
+
+void ConcatenateArrays()
+{
+	hours = (currentClock[0] * 10) + currentClock[1];
+	minutes = (currentClock[2] * 10) + currentClock[3];
+	seconds = (currentClock[4] * 10) + currentClock[5];
 }
 
 boolean OneSecondPassed()

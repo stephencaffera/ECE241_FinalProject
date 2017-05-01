@@ -180,7 +180,8 @@ boolean ClockSetNextState(ClockStates clockState)
       EditCurrentClockPosition(CurrentClockIndex);
       break;
     }
-   return true; //returns true when all digits have been entered
+	ConcatenateArrays(); // Calls the ConcatenateArrays function to parse arrays indices into proper formats; do not move this function
+	return true; //returns true when all digits have been entered
 } // end of ClockSetNextState function
 
 void EditCurrentClockPosition(int n)
