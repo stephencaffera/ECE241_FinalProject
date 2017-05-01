@@ -9,19 +9,20 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-
-// Variables to define pin numbers
+// Macros to define pin numbers and the error time for the encoder presses
 #define INTERRUPT_A 2
 #define INTERRUPT_B 3
 #define PRESS_READ 4
 #define PRESS_ERROR_INTERVAL 5
 
-// Enumerator for button state
-enum ButtonState {Idle, Wait, Low};
+enum ButtonState {Idle, Wait, Low}; //Enumerator for the button state
 
 ButtonState state = Idle; // initialize the state to idle
 int encoderPosition = 0;
 unsigned long timer, buttonTime;
+
+attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
+attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
 
 boolean ButtonNextState(int input) // passes the input (high or low) as an int
 {
@@ -60,8 +61,6 @@ void EncoderSetup()
   pinMode(INTERRUPT_A, INPUT);
   pinMode(INTERRUPT_B, INPUT);
   pinMode(PRESS_READ, INPUT);
-  attachInterrupt(digitalPinToInterrupt(INTERRUPT_A), MonitorA, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(INTERRUPT_B), MonitorB, CHANGE);
   timer = millis();
 }
 
