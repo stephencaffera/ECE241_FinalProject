@@ -10,6 +10,10 @@ extern int currentClock[];
 int hours, minutes, seconds, timerError;
 unsigned long clockTimer;
 
+enum ClockStates = { CLOCK_RUNNING, CLOCK_SET_HOURS,
+                    CLOCK_SET_MINUTES, CLOCK_SET_SECONDS };
+ClockStates clockState = CLOCK_RUNNING;
+
 void ClockSetup()
 {
 	clockTimer = millis();
