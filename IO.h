@@ -100,9 +100,11 @@ void Console_SetTime()
 
   if (Serial.read() == 'Y' || Serial.read() == 'y')
   {
+    clockSet = false;
     hours = newTime[0];
     minutes = newTime[1];
     seconds = newTime[2];
+    clockSet = true;
   }
 } // End of Console_SetTime()
 

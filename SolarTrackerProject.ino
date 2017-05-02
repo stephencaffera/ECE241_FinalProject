@@ -46,8 +46,9 @@ void loop()
 {
   while (!clockSet) // Prompts user to set clock while control variable is false
   {
-    Console_SetTime(); // Allows user to set the clock via serial input monitor
-	  ClockSetNextState(); // ...OR, allows the user to set the clock via LCD input; see IO.h
+    if (Console_TimeChangeRequested()) Console_SetTime(); // Allows user to set the clock via serial input monitor
+    if (clockSet) break;
+	  if (ButtonNextState(digitalRead(PRESS_READ))) ClockSetNextState(); // ...OR, allows the user to set the clock via LCD input; see IO.h
   }
   
   if (millis() > solarTimer) AdjustSolar(ReadSolar()); // Continually adjusts the Servo to respond to changes in the direction of its light source
