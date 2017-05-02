@@ -57,8 +57,8 @@ void AdjustSolar(float diff)
   {
     solarAngle = Solar.read();
 
-    if (diff > VOLTAGE_MIDPOINT) Solar.write(--solarAngle);
-    else if (diff < VOLTAGE_MIDPOINT) Solar.write(++solarAngle);
+    if (diff > VOLTAGE_MIDPOINT) if (solarAngle > 0) Solar.write(--solarAngle);
+    else if (diff < VOLTAGE_MIDPOINT) if (solarAngle < 180) Solar.write(++solarAngle);
 
     Universal_PrintAngle(solarAngle);
   }
