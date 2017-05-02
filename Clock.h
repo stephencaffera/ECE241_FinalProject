@@ -18,7 +18,6 @@
   boolean clockSet;
 
   extern int currentClock[];
-//
 
 //Function prototypes and external function declarations:
   void ClockSetup(void);
@@ -28,14 +27,30 @@
   void UpdateClock(void);
 
   extern boolean ButtonNextState(int input);
-//
 
+/**
+* ClockSetup:
+* A function for initializing the master clockSet boolean variable, and initializing
+* the clockTimer.
+*
+* @params: void
+* @return: void
+*/
 void ClockSetup()
 {
   clockSet = false;
 	clockTimer = millis();
 } // End of ClockSetup()
 
+/**
+* ConcatenateArrays:
+* A function that takes the input arrays from LCD clock-setting, and converts
+* them into usable numbers to be assigned to the hours, minutes, and seconds
+* global variables.
+*
+* @params: void
+* @return: void
+*/
 void ConcatenateArrays()
 {
 	hours = (currentClock[0] * MULTIPLIER) + currentClock[1];
@@ -43,6 +58,13 @@ void ConcatenateArrays()
 	seconds = (currentClock[4] * MULTIPLIER) + currentClock[5];
 } // End of ConcatenateArrays()
 
+/**
+* OneSecondPassed:
+* A function the checks to see if one second has passed on the timer.
+*
+* @params: void
+* @return: true or false
+*/
 boolean OneSecondPassed()
 {
 	if (millis() - clockTimer >= CLOCK_INTERVAL)
@@ -53,11 +75,27 @@ boolean OneSecondPassed()
 	else return false;
 } // End of OneSecondPassed()
 
+/**
+* updateClockTimer:
+* A function for updating the clock timer every second, and taking into account
+* an error margin in the accuracy of the timer.
+*
+* @params: void
+* @return: void
+*/
 void UpdateClockTimer()
 {
 	clockTimer += (CLOCK_INTERVAL - timerError);
 } // End of UpdateClockTimer()
 
+/**
+* UpdateClock:
+* A function that updates the minutes, seconds, and hours of the clock; to be
+* called every second to change the clock values.
+*
+* @params: void
+* @return: void
+*/
 void UpdateClock()
 {
 	if (seconds < 59) seconds++;
