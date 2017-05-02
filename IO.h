@@ -98,14 +98,17 @@ void Console_SetTime()
   Console_PrintTime();
   Serial.print("Confirm (Y/N): ");
 
-  if (Serial.read() == 'Y' || Serial.read() == 'y')
+  do
   {
-    clockSet = false;
-    hours = newTime[0];
-    minutes = newTime[1];
-    seconds = newTime[2];
-    clockSet = true;
-  }
+    if (Serial.read() == 'Y' || Serial.read() == 'y')
+    {
+      clockSet = false;
+      hours = newTime[0];
+      minutes = newTime[1];
+      seconds = newTime[2];
+      clockSet = true;
+    }
+  } while (Serial.read() != 'Y' && Serial.read() != 'y' && Serial.read() != 'N' && Serial.read() != 'n');
 } // End of Console_SetTime()
 
 boolean Console_TimeChangeRequested()

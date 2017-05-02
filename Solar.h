@@ -14,7 +14,7 @@
 
 // Global declaration of constants used in this header file
 #define FLT_DIG 1
-#define SOLAR_PIN 3
+#define SOLAR_PIN 5
 #define PIN_TOTAL 0
 #define PIN_PART 1
 #define START_ANGLE 0
@@ -46,6 +46,7 @@
 * A function that determines the balance between the two
 * photoreactors, and adjust's the angle of the disc attached to the Servo
 * motor based on the voltages.
+* 
 * @params: float diff. Represents the different in voltage between the two
   photoreactors as a floating point. No return value; adjusts global variables.
   @return: void
@@ -70,6 +71,7 @@ void AdjustSolar(float diff)
 * two of the Arduino's pins, represented by globally-defined constants. The function
 * also uses constants to calculate the partial and total voltages and store them as
 * floating point values.
+* 
 * @params: void
 * @return: voltsDiff. A float representing the difference in voltage between the two photoreactors.
 */
@@ -92,6 +94,7 @@ float ReadSolar()
 * the time of day according to the clock. If the time is before 06:00 or after
 * 18:00, then the solar angle will be set to 0 in anticipation of the "sunrise".
 * If not, then the solar disc angle will be determined by the time of day
+* 
 * @params: void
 * @return: void
 */
@@ -106,6 +109,7 @@ void SetSolarAngleFromTime()
 * as a global, SOLAR_PIN. It also attached the pins on the Arduino needed to receive
 * inputs from the two photoreactors on the solar disc, attached to the pins
 * represented by PIN_TOTAL and PIN_PART. It also initializes the solarTimer.
+* 
 * @params: void
 * @return: void
 */
