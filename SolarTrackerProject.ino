@@ -16,12 +16,6 @@
 #include "IO.h"
 #include "Solar.h"
 
-//Global variable declarations:
-  extern unsigned long solarTimer;
-  extern int solarAngle;
-  extern boolean clockSet;
-//
-
 //Function prototypes:
   void setup(void);
   void loop(void);

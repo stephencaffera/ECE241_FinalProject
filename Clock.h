@@ -17,7 +17,7 @@
   unsigned long clockTimer;
   boolean clockSet;
 
-  extern in currentClock[];
+  extern int currentClock[];
 //
 
 //Function prototypes and external function declarations:
