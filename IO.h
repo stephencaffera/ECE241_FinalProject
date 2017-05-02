@@ -188,7 +188,7 @@ void EditCurrentClockPosition(int n)
     {
       LCD.setCursor(n, 0);
       LCD.print(encoderPosition);
-    } while(!ButtonNextState(digitalRead(ENCODER_PIN)));
+    } while (!ButtonNextState(digitalRead(ENCODER_PIN)));
 
     if (ButtonNextState(digitalRead(ENCODER_PIN)))
     {
