@@ -24,7 +24,7 @@ enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_S
 //Global variable and object declarations:
   LiquidCrystal LCD(11, 9, 5, 6, 7, 8);
   
-  ClockStates clockState = CLOCK_SET_HOURS;
+  ClockStates clockState;
   int currentClock[ARRAY_LENGTH], newTime[3], CurrentClockIndex;
 
   extern int hours, minutes, seconds;
@@ -108,13 +108,14 @@ void Console_SetTime()
 
 boolean Console_TimeChangeRequested()
 {
-  (Serial.read() == 'S' || Serial.read() == 's') ? return true : return false;
+  (Serial.read() == 'S' || Serial.read() == 's') ? true : false;
 } // End of Console_TimeChangeRequested()
 
 void IO_Setup()
 {
   Serial.begin(BAUD_RATE);
   LCD.clear();
+  clockState = CLOCK_SET_HOURS;
 } // End of IO_Setup
 
 void LCD_PrintTime()

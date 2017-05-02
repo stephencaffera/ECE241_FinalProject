@@ -5,10 +5,12 @@
 * 
 * < SolarTrackerProject.ino: Main file for program; control flow between header files >
 * 
-* This program is designed using the Model-View-Controller (MVC) architecture.
-* Clock.h, Encoder.h, and Solar.h are header files containing the code serving as the Model for the program.
-* IO.h is a header file containing the code serving as the View for the program. 
-* SolarTrackerProject.ino is an Arduino source file containing the code serving as the Controller for the program.
+* This program is designed using the Model-View-Controller (MVC) architecture. The code is divided as follows:
+*   Model: Clock.h, Encoder.h, Solar.h
+*   View: IO.h
+*   Controller: SolarTrackerProject.ino
+* All .h files are included in SolarTrackerProject.ino with the '#include' preprocessor command.
+* Interconnectivity between the .h files is achieved by using the 'extern' keyword on the necessary variables and functions
 */
 
 #include "Clock.h"
