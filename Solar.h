@@ -13,16 +13,19 @@
 #include <float.h>
 
 // Global declaration of constants used in this header file
-#define FLT_DIG 1
-#define SOLAR_PIN 5
-#define PIN_TOTAL 0
-#define PIN_PART 1
-#define START_ANGLE 0
-#define VOLTAGE_MIDPOINT 0.5
-#define VOLT_CONVERSION_RATIO (5.0 / 1024.0)
-#define INSUFFICIENT_VOLTAGE 4.0
 #define ANGLE_TO_MINUTE_RATIO 0.25
+#define DIVIDE_IN_HALF(X) (X / 2)
+#define FLT_DIG 1
+#define INSUFFICIENT_VOLTAGE 4.0
+#define MAX_ANGLE 180
+#define MIN_ANGLE 0
 #define MINUTES_IN_AN_HOUR 60
+#define PIN_PART 1
+#define PIN_TOTAL 0
+#define SOLAR_PIN 10
+#define START_ANGLE 0
+#define VOLT_CONVERSION_RATIO (5.0 / 1024.0)
+#define VOLT_THRESHOLD 0
 
 // Global variable and object declarations:
   Servo Solar;
@@ -57,8 +60,8 @@ void AdjustSolar(float diff)
   {
     solarAngle = Solar.read();
 
-    if (diff > VOLTAGE_MIDPOINT) if (solarAngle > 0) Solar.write(--solarAngle);
-    else if (diff < VOLTAGE_MIDPOINT) if (solarAngle < 180) Solar.write(++solarAngle);
+    if (diff < VOLT_THRESHOLD) if (solarAngle > MIN_ANGLE) Solar.write(--solarAngle);
+    else if (diff > VOLT_THRESHOLD) if (solarAngle < MAX_ANGLE) Solar.write(++solarAngle);
 
     Universal_PrintAngle(solarAngle);
   }
@@ -83,7 +86,7 @@ float ReadSolar()
   voltsTotal = lightTotal * VOLT_CONVERSION_RATIO;
   float voltsPart = lightPart * VOLT_CONVERSION_RATIO;
 
-  float voltsDiff = (voltsTotal - voltsPart);
+  float voltsDiff = (DIVIDE_IN_HALF(voltsTotal) - voltsPart);
 
   return voltsDiff;
 } // End of ReadSolar()

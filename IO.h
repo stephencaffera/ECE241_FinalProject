@@ -12,13 +12,15 @@
 #include <LiquidCrystal.h>
 
 // Definition of global file constants
-#define BAUD_RATE 9600
-#define TOP_ROW 0
-#define BOTTOM_ROW 1
-#define FIRST_COL 0
-#define CLEAR "                "
 #define ARRAY_LENGTH 6
+#define BAUD_RATE 9600
+#define BOTTOM_ROW 1
+#define CLEAR "                "
+#define COLS 16
 #define ENCODER_PIN 4
+#define FIRST_COL 0
+#define ROWS 2
+#define TOP_ROW 0
 
 enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_SECONDS}; //Enumerator for the clock state
 
@@ -47,6 +49,57 @@ enum ClockStates {CLOCK_RUNNING, CLOCK_SET_HOURS, CLOCK_SET_MINUTES, CLOCK_SET_S
   void Universal_PrintAngle(int);
 
   extern boolean ButtonNextState(int);
+
+/**
+* ClockSetNextState:
+* ClockSetNextState is a function that controls a state machine for setting the
+* clock via LCD monitor. Inside the IO_Setup function, the enumerated variable clockState
+* is initialized to CLOCK_SET_HOURS, which will trigger a switch statement to move through
+* the hours, minutes, and second variables until each has been set via the function
+* EditCurrentClockPosition. Each digit of the each time variable in stored in a separate
+* array index, and converted later with the ConcatenateArrays function. At the end of the
+* switch statement, a boolean flag variable, clockSet, is set to true.
+*
+* @params: void
+* @return: void
+*/
+void ClockSetNextState()
+{
+ switch (clockState)
+  {
+    case CLOCK_SET_HOURS:
+      CurrentClockIndex = 0; // local variable
+      EditCurrentClockPosition(CurrentClockIndex);
+
+      CurrentClockIndex = 1; // local variable
+      EditCurrentClockPosition(CurrentClockIndex);
+
+      clockState = CLOCK_SET_MINUTES;
+      break;
+
+    case CLOCK_SET_MINUTES:
+      CurrentClockIndex = 2;
+      EditCurrentClockPosition(CurrentClockIndex);
+
+      CurrentClockIndex = 3;
+      EditCurrentClockPosition(CurrentClockIndex);
+
+      clockState = CLOCK_SET_SECONDS;
+      break;
+
+    case CLOCK_SET_SECONDS:
+      CurrentClockIndex = 4;
+      EditCurrentClockPosition(CurrentClockIndex);
+
+      CurrentClockIndex = 5;
+      EditCurrentClockPosition(CurrentClockIndex);
+
+      clockSet = false;
+      ConcatenateArrays(); // Calls the ConcatenateArrays function to parse arrays indices into proper formats
+      clockSet = true;
+      break;
+    }
+} // End of ClockSetNextState()
 
 /**
 * Console_PrintTime:
@@ -153,6 +206,36 @@ boolean Console_TimeChangeRequested()
 } // End of Console_TimeChangeRequested()
 
 /**
+* EditCurrentClockPosition:
+* EditCurrentClockPosition is a function that accepts a digit from the encoder,
+* and saved it to the currentClock array if the user presses the encoder ButtonNextState
+* to confirm the digit selection. This function should only be called internally,
+* from the state machine. It accepts a single variable, and integer representing
+* the array index, and returns nothing
+*
+* @params: int n, an integer representing the current array index, passed from state machine
+* @return: void
+*/
+void EditCurrentClockPosition(int n)
+{
+  encoderPosition = 0;
+  do{
+    do
+    {
+      LCD.setCursor(n, 0);
+      LCD.print(encoderPosition);
+    } while (!ButtonNextState(digitalRead(ENCODER_PIN)));
+
+    if (ButtonNextState(digitalRead(ENCODER_PIN)))
+    {
+      currentClock[n] = encoderPosition;
+      LCD.setCursor(n, 0);
+      LCD.print(encoderPosition);
+    }
+  } while (currentClock[n] == 0);
+} // End of EditCurrentClockPosition()
+
+/**
 * IO_Setup:
 * IO_Setup is a function that sets the baud rate based on the global file constants
 * defined at the top, clears the LCD monitor completely, and initializes the
@@ -164,6 +247,7 @@ boolean Console_TimeChangeRequested()
 void IO_Setup()
 {
   Serial.begin(BAUD_RATE);
+  LCD.begin(COLS, ROWS);
   LCD.clear();
   clockState = CLOCK_SET_HOURS;
 } // End of IO_Setup
@@ -193,87 +277,6 @@ void LCD_PrintTime()
   if (seconds < 10) LCD.print("0");
   LCD.print(seconds);
 } // End of LCD_PrintTime()
-
-/**
-* ClockSetNextState:
-* ClockSetNextState is a function that controls a state machine for setting the
-* clock via LCD monitor. Inside the IO_Setup function, the enumerated variable clockState
-* is initialized to CLOCK_SET_HOURS, which will trigger a switch statement to move through
-* the hours, minutes, and second variables until each has been set via the function
-* EditCurrentClockPosition. Each digit of the each time variable in stored in a separate
-* array index, and converted later with the ConcatenateArrays function. At the end of the
-* switch statement, a boolean flag variable, clockSet, is set to true.
-*
-* @params: void
-* @return: void
-*/
-void ClockSetNextState()
-{
- switch (clockState)
-  {
-    case CLOCK_SET_HOURS:
-      CurrentClockIndex = 0; // local variable
-      EditCurrentClockPosition(CurrentClockIndex);
-
-	    CurrentClockIndex = 1; // local variable
-      EditCurrentClockPosition(CurrentClockIndex);
-
-      clockState = CLOCK_SET_MINUTES;
-      break;
-
-    case CLOCK_SET_MINUTES:
-      CurrentClockIndex = 2;
-      EditCurrentClockPosition(CurrentClockIndex);
-
-	    CurrentClockIndex = 3;
-      EditCurrentClockPosition(CurrentClockIndex);
-
-      clockState = CLOCK_SET_SECONDS;
-      break;
-
-    case CLOCK_SET_SECONDS:
-      CurrentClockIndex = 4;
-      EditCurrentClockPosition(CurrentClockIndex);
-
-	    CurrentClockIndex = 5;
-      EditCurrentClockPosition(CurrentClockIndex);
-
-      clockSet = false;
-      ConcatenateArrays(); // Calls the ConcatenateArrays function to parse arrays indices into proper formats
-      clockSet = true;
-      break;
-    }
-} // End of ClockSetNextState()
-
-/**
-* EditCurrentClockPosition:
-* EditCurrentClockPosition is a function that accepts a digit from the encoder,
-* and saved it to the currentClock array if the user presses the encoder ButtonNextState
-* to confirm the digit selection. This function should only be called internally,
-* from the state machine. It accepts a single variable, and integer representing
-* the array index, and returns nothing
-*
-* @params: int n, an integer representing the current array index, passed from state machine
-* @return: void
-*/
-void EditCurrentClockPosition(int n)
-{
-  encoderPosition = 0;
-  do{
-    do
-    {
-      LCD.setCursor(n, 0);
-      LCD.print(encoderPosition);
-    } while (!ButtonNextState(digitalRead(ENCODER_PIN)));
-
-    if (ButtonNextState(digitalRead(ENCODER_PIN)))
-    {
-      currentClock[n] = encoderPosition;
-      LCD.setCursor(n, 0);
-      LCD.print(encoderPosition);
-    }
-  } while (currentClock[n] == 0);
-} // End of EditCurrentClockPosition()
 
 /**
 * LCD_ClearBottomRow:

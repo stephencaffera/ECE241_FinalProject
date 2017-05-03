@@ -42,12 +42,12 @@ void setup()
 */
 void loop()
 {
-  while (!clockSet) // Prompts user to set clock while control variable is false
+  /*while (!clockSet) // Prompts user to set clock while control variable is false
   {
     if (Console_TimeChangeRequested()) Console_SetTime(); // Allows user to set the clock via serial input monitor
-    if (clockSet) break; // Breaks from the loop if the time has been set via the serial monitor
-	  if (ButtonNextState(digitalRead(PRESS_READ))) ClockSetNextState(); // ...OR, allows the user to set the clock via LCD input
-  }
+    if (clockSet) break; // Breaks from the loop if the time has been set via the serial monitor so as to avoid superfluous time initialization
+	  if (ButtonNextState(digitalRead(PRESS_READ))) ClockSetNextState(); // Allows the user to set the clock via LCD and encoder
+  }*/
 
   if (OneSecondPassed()) // Determines if clock face needs to be updated and reprinted
   {
@@ -56,8 +56,8 @@ void loop()
     if (clockSet) Universal_PrintTime(); // Prints the clock face on the top line of the LCD and on the serial monitor; only prints if the clock is running
   }
   
-  if (millis() > solarTimer) AdjustSolar(ReadSolar()); // Continually adjusts the Servo to respond to changes in the direction of its light source
+  if (millis() > solarTimer) AdjustSolar(ReadSolar()); // Continually adjusts the Servo to respond to changes in the direction of its light source and prints its angle
 
   if (Serial.available()) if (Console_TimeChangeRequested()) Console_SetTime();
-  if (clockSet) if (ButtonNextState(digitalRead(PRESS_READ))) ClockSetNextState();
+  if (clockSet) if (ButtonNextState(digitalRead(PRESS_READ))) ClockSetNextState(); 
 } // End of loop()

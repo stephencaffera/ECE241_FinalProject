@@ -12,8 +12,8 @@
 
 #define INTERRUPT_A 2
 #define INTERRUPT_B 3
-#define PRESS_READ 4
 #define PRESS_ERROR_INTERVAL 5
+#define PRESS_READ 4
 
 enum ButtonState {Idle, Wait, Low}; //Enumerator for the button state
 
