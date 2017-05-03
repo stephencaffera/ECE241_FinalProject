@@ -125,7 +125,7 @@ void Console_SetTime()
 
   do
   {
-    if (Serial.read() == 'Y' || Serial.read() == 'y')
+    if ((char) Serial.read() == 'Y' || (char) Serial.read() == 'y')
     {
       clockSet = false;
       hours = newTime[0];
@@ -133,7 +133,7 @@ void Console_SetTime()
       seconds = newTime[2];
       clockSet = true;
     }
-  } while (Serial.read() != 'Y' && Serial.read() != 'y' && Serial.read() != 'N' && Serial.read() != 'n');
+  } while ((char) Serial.read() != 'Y' && (char) Serial.read() != 'y' && (char) Serial.read() != 'N' && (char) Serial.read() != 'n');
 } // End of Console_SetTime()
 
 /**
@@ -149,7 +149,7 @@ void Console_SetTime()
 */
 boolean Console_TimeChangeRequested()
 {
-  (Serial.read() == 'S' || Serial.read() == 's') ? true : false;
+  ((char) Serial.read() == 'S' || (char) Serial.read() == 's') ? true : false;
 } // End of Console_TimeChangeRequested()
 
 /**
