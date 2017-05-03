@@ -44,7 +44,7 @@ boolean ButtonNextState(int input) // Passes the input (high or low) as an int
     case Idle:
       if(input == LOW)
       {
-        buttonTime = millis();
+        buttonTime = millis(), 
         state = Wait;
       }
       break;
@@ -96,20 +96,14 @@ void EncoderSetup()
 */
 void MonitorA()
 {
-  if(digitalRead(INTERRUPT_A) == digitalRead(INTERRUPT_B))
-  {
-    encoderPosition++;
-  }
-  else
-  {
-    encoderPosition--;
-  }
+  if(digitalRead(INTERRUPT_A) == digitalRead(INTERRUPT_B)) encoderPosition++;
+  else encoderPosition--;
 } // End of MonitorA()
 
 /**
 * MonitorB:
-* MonitorA is a function that controls the incrementation of the encoder position
-* when the knob is turned in one direction (opposite of MonitorA function below).
+* MonitorB is a function that controls the incrementation of the encoder position
+* when the knob is turned in one direction (opposite of MonitorA function above).
 * To determine the value of encoderPosition, we check the interrupts defined in the
 * encoder setup function and see if the inputs are the same.
 *
@@ -118,14 +112,8 @@ void MonitorA()
 */
 void MonitorB()
 {
-  if(digitalRead(INTERRUPT_A) == digitalRead(INTERRUPT_B))
-  {
-    encoderPosition--;
-  }
-  else
-  {
-    encoderPosition++;
-  }
+  if(digitalRead(INTERRUPT_A) == digitalRead(INTERRUPT_B)) encoderPosition--;
+  else encoderPosition++;
 } // End of MonitorB()
 
 #endif

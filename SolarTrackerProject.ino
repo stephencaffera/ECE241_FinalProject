@@ -21,7 +21,6 @@
 //Function prototypes:
   void setup(void);
   void loop(void);
-//
 
 /**
 * Setup calls functions necessary for initializing the clock, the encoder functionality, the input/output stream, and the light sennsors.
@@ -36,11 +35,10 @@ void setup()
 } // End of setup()
 
 /**
-* In the main loop of the program, the clock is set based on user input to the
-* serial monitor; then, a function is called to move the solar tracker into position
-* based on the time the user entered. Then, then solar trakcer moves by 0.25
-* degrees every 1 minute that passes, controlled by a function in the Solar.h
-* header file.
+* In the main loop of the program, the clock is set based on user input via the
+* serial monitor or via the LCD and encoder; then, a function is called to move the solar tracker 
+* into position based on the time the user entered. Then, then solar trakcer moves by 0.25
+* degrees every 1 minute that passes, controlled by a function in the Solar.h header file.
 */
 void loop()
 {

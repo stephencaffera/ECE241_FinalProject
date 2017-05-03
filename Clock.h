@@ -109,10 +109,7 @@ void UpdateClock()
 			minutes = 0;
 
 			if (hours < 23) hours++;
-			else
-			{
-				hours = 0;
-			}
+			else hours = 0;
 		}
 	}
 } // End of UpdateClock()

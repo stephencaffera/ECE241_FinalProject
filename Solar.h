@@ -3,7 +3,7 @@
 * < ECE 241, Spring 2017 >
 * < Final Project: Solar Tracker>
 *
-* < Solar.h: header file control and operation of the servo motor >
+* < Solar.h: header file control and operation of the Servo motor >
 */
 
 #ifndef SOLAR_H
