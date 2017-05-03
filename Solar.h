@@ -14,7 +14,7 @@
 
 // Global declaration of macros used in this header file
 #define ANGLE_TO_MINUTE_RATIO 0.25
-#define DIVIDE_IN_HALF(X) (X / 2)
+#define DIVIDE_IN_HALF(X) (X / 2.0)
 #define FLT_DIG 1
 #define INSUFFICIENT_VOLTAGE 4.5
 #define MAX_ANGLE 180
@@ -58,10 +58,8 @@ void AdjustSolar(float diff)
 {
   if (voltsTotal > INSUFFICIENT_VOLTAGE)
   {
-    solarAngle = Solar.read();
-    
-    if (diff > VOLT_THRESHOLD) if (solarAngle > MIN_ANGLE) Solar.write(--solarAngle);
-    else if (diff < VOLT_THRESHOLD) if (solarAngle < MAX_ANGLE) Solar.write(++solarAngle);
+    if (diff > VOLT_THRESHOLD && solarAngle < MAX_ANGLE) Solar.write(++solarAngle);
+    else if (diff < VOLT_THRESHOLD && solarAngle > MIN_ANGLE) Solar.write(--solarAngle);
   }
   else SetSolarAngleFromTime();
 
@@ -121,7 +119,7 @@ void SolarSetup()
   Solar.attach(SOLAR_PIN);
   pinMode(PIN_TOTAL, INPUT);
   pinMode(PIN_PART, INPUT);
-  Solar.write(START_ANGLE);
+  Solar.write(solarAngle = START_ANGLE);
   solarTimer = millis();
 } // End of SolarSetup()
 
