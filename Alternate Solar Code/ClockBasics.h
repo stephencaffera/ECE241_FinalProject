@@ -31,6 +31,16 @@ void UpdateClock()
   } // End of Seconds test
 } // end of UpdateClock()
 
+//function to check if current time is valid
+boolean InvalidTime()
+{
+  if (Hours >= 18 || Hours <= 6)
+    {
+      return true;
+    }
+    else return false;
+}
+
 void SendClock()
 {
   // Check if leading zero needs to be sent

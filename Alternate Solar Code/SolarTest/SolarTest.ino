@@ -12,9 +12,10 @@ LiquidCrystal LcdDriver(11, 9, 5, 6, 7, 8);
 
 #include "ClockBasics.h"
 unsigned long ClockTimer;
-int tolerance = 100;
+unsigned long SolarTimer;
+int tolerance = 2;
 
-int SolarValue = 90; // variable for the solar angle, set to initial position 90 deg
+int SolarValue = 0; // variable for the solar angle, set to initial position 90 deg
 
 #include "EncoderRead.h"
 
@@ -29,7 +30,7 @@ void UpdateLCD()
 
   // Place cursor on line that is currently being changed.
   // Be sure cursor is on and blinking.
-  LcdDriver.setCursor(1, 0);
+  LcdDriver.setCursor(0, 0);
   LcdClock();
 } // End of UpdateLCD
 
@@ -50,6 +51,7 @@ void setup() {
 
   // Set up software timers.
   ClockTimer = millis();
+  SolarTimer = millis();
 
   // Set up lcd.
   LcdDriver.begin(16, 2);
@@ -59,13 +61,13 @@ void setup() {
 // put your main code here, to run repeatedly:
 void loop()
 {
-  int val1 = analogRead(TOTAL);
-    Serial.println(val1);
-  int val2 = analogRead(PART);
-    Serial.println(val2);
-
-  if ((abs(val2 - val1) <= tolerance)) 
+  if (millis() - SolarTimer >= 100)
   {
+    int val1 = analogRead(TOTAL) / 2;
+    int val2 = analogRead(PART);
+
+    if ((abs(val1 - val2) <= tolerance))
+    {
       //do nothing if the difference between values is within the tolerance limit
     } else {
       if (val1 > val2)
@@ -84,10 +86,14 @@ void loop()
     if (SolarValue < 0) {
       SolarValue = 0;  // reset to 0 if it goes lower
     }
-
+    if (InvalidTime()) // if the hour is after 18:00 or before 06:00....
+    {
+      SolarValue = 0;
+    }
     SolarServo.write(SolarValue);
-    
-
+    SolarTimer+=100;
+  } // end SolarTimer if
+  
   // Check for button press
   if (1 == ButtonRead())
   {
@@ -96,18 +102,19 @@ void loop()
 
   if (millis() - ClockTimer >= 1000)
   {
+
     ClockTimer += 1000;
 
     // if clock is running, update the clock
     if (clockState == CLOCK_RUNNING)
     {
       UpdateClock();
-      SendClock();
-      UpdateLCD();
-    // Then send data out...
+      // Then send data out...
     }
+    SendClock();
+    UpdateLCD();
   } // End of ClockTimer if
-  
+
   // Check for incoming data
   if (Serial.available())
   {
@@ -115,7 +122,4 @@ void loop()
     SettingClock(Serial.read());
   } // End of Serial input handling
   // Check for update from encoder.
-
-  SolarServo.write(SolarValue);
-  UpdateLCD(); // update display reflecting change of axes.
 }
